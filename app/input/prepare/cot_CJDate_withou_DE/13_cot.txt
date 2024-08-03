@@ -1,0 +1,39 @@
+---
+Example of question thirteen
+---
+
+CREATE TABLE Suppliers (
+    sno VARCHAR(255),
+    sname VARCHAR(255),
+    status INT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Parts (
+    pno VARCHAR(255),
+    pname VARCHAR(255),
+    color VARCHAR(255),
+    weight FLOAT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Shipments (
+    sno VARCHAR(255),
+    pno VARCHAR(255),
+    qty INT
+)
+
+
+Question : Get supplier numbers and status for suppliers in Paris with status > 20
+
+---
+output
+---
+{
+  "reasoning_process" : "The WHERE clause combines two conditions to achieve the number and status of all suppliers located in Paris and with a status greater than 20: first, it specifies that the supplier must be located in Paris; second, the supplier's status must be greater than 20.",
+  "sql": "select s.sno, s.status from suppliers s WHERE s.CITY = 'Paris' AND s.STATUS > 20"
+}
+
+---
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+---

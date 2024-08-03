@@ -1,0 +1,32 @@
+---
+Example of question thirty
+---
+
+CREATE TABLE Delivery (
+    delivery_id INT,
+    customer_id INT,
+    order_date DATE,
+    customer_pref_delivery_date DATE
+)
+
+
+If the customer's preferred delivery date is the same as the order date, then the order is called immediate; otherwise, it is called scheduled.
+
+The first order of a customer is the order with the earliest order date that the customer made. It is guaranteed that a customer has precisely one first order.
+
+Write a solution to find the percentage of immediate orders in the first orders of all customers, rounded to 2 decimal places.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Use the ROW_NUMBER function to sort each customer's orders by order date and identify each customer's first order. CASE is then used to identify whether the order is for immediate delivery. If the order date is equal to the customer's preferred delivery date, it is marked as 'immediate', otherwise it is marked as 'scheduled'. Finally, in the query, calculate the quantity of immediate delivery orders and divide by the total first order quantity, then use the ROUND function to round the percentage to two decimal places to get the percentage of immediate delivery.",
+  "sql": "with cte as ( select customer_id, order_date, customer_pref_delivery_date as pref_date, row_number() over (partition by customer_id order by order_date) as rn, case when order_date = customer_pref_delivery_date then 'immediate' else 'scheduled' end as flag from Delivery ) select round(sum(case when flag='immediate' then 1 else 0 end) / convert(float, count(flag))*100, 2) as immediate_percentage from cte where rn = 1;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

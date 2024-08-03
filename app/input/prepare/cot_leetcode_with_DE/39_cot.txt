@@ -1,0 +1,77 @@
+---
+Example of question thirty-nine
+---
+
+{
+  "query": "A bank wants to draw a chart of the number of transactions bank visitors did in one visit to the bank and the corresponding number of visitors who have done this number of transaction in one visit. Write an SQL query to find how many users visited the bank and didn't do any transactions, how many visited the bank and did one transaction and so on. The result table will contain two columns: transactions_count which is the number of transactions done in one visit. visits_count which is the corresponding number of users who did transactions_count in one visit to the bank. transactions_count should take all values from 0 to max(transactions_count) done by one or more users. Return the result table ordered by transactions_count.",
+  "database_structure": {
+    "Visits": {
+      "structure": [
+        {"name": "user_id", "DataType": "int"},
+        {"name": "visit_date", "DataType": "date"}
+      ],
+      "PrimaryKey": ["user_id", "visit_date"],
+      "Explanation": "(user_id, visit_date) is the primary key for this table. Each row of this table indicates that user_id has visited the bank in visit_date.",
+      "data": [
+        {"user_id": 1, "visit_date": "2020-01-01"},
+        {"user_id": 2, "visit_date": "2020-01-02"},
+        {"user_id": 12, "visit_date": "2020-01-01"},
+        {"user_id": 19, "visit_date": "2020-01-03"},
+        {"user_id": 1, "visit_date": "2020-01-02"},
+        {"user_id": 2, "visit_date": "2020-01-03"},
+        {"user_id": 1, "visit_date": "2020-01-04"},
+        {"user_id": 7, "visit_date": "2020-01-11"},
+        {"user_id": 9, "visit_date": "2020-01-25"},
+        {"user_id": 8, "visit_date": "2020-01-28"}
+      ]
+    },
+    "Transactions": {
+      "structure": [
+        {"name": "user_id", "DataType": "int"},
+        {"name": "transaction_date", "DataType": "date"},
+        {"name": "amount", "DataType": "int"}
+      ],
+      "Explanation" : "There is no primary key for this table, it may contain duplicates. Each row of this table indicates that user_id has done a transaction of amount in transaction_date. It is guaranteed that the user has visited the bank in the transaction_date.(i.e The Visits table contains (user_id, transaction_date) in one row).",
+      "data": [
+        {"user_id": 1, "transaction_date": "2020-01-02", "amount": 120},
+        {"user_id": 2, "transaction_date": "2020-01-03", "amount": 22},
+        {"user_id": 7, "transaction_date": "2020-01-11", "amount": 232},
+        {"user_id": 1, "transaction_date": "2020-01-04", "amount": 7},
+        {"user_id": 9, "transaction_date": "2020-01-25", "amount": 33},
+        {"user_id": 9, "transaction_date": "2020-01-25", "amount": 66},
+        {"user_id": 8, "transaction_date": "2020-01-28", "amount": 1},
+        {"user_id": 9, "transaction_date": "2020-01-25", "amount": 99}
+      ]
+    }
+  },
+  "prompt_for_CoT": "Please explain the process from problem to generating SQL queries following the chain of thought method.",
+  "output_template": {
+    "columns": [
+      {"name": "transactions_count", "DataType": "int"},
+      {"name": "visits_count", "DataType": "int"}
+    ],
+    "rows": [
+      {"transactions_count": 0, "visits_count": 4},
+      {"transactions_count": 1, "visits_count": 5},
+      {"transactions_count": 2, "visits_count": 0},
+      {"transactions_count": 3, "visits_count": 1}
+    ],
+    "Explanation": ["The chart drawn for this example is shown above.", "* For transactions_count = 0, The visits (1, "2020-01-01"), (2, "2020-01-02"), (12, "2020-01-01") and (19, "2020-01-03") did no transactions so visits_count = 4.", "* For transactions_count = 1, The visits (2, "2020-01-03"), (7, "2020-01-11"), (8, "2020-01-28"), (1, "2020-01-02") and (1, "2020-01-04") did one transaction so visits_count = 5.", "* For transactions_count = 2, No customers visited the bank and did two transactions so visits_count = 0.", "* For transactions_count = 3, The visit (9, "2020-01-25") did three transactions so visits_count = 1.", "* For transactions_count >= 4, No customers visited the bank and did more than three transactions so we will stop at transactions_count = 3."]
+  }
+}
+
+---
+
+Please reply in json format according to the above structure, without redundant output and escape characters, so that I can get the MS SQL syntax for testing:
+example(No escape characters):
+
+{
+  "reasoning_process" : "Count the number of transactions per visit. Count the number of visits for each different number of transactions. Includes access without any transactions. A record is generated for each possible number of transactions, even if some transaction numbers do not have a corresponding number of visits. Use CTE or subquery and max_trans to calculate the maximum number of transactions per visit, seq is used to generate a sequence from 0 to the maximum number of transactions, and trans_count is used to calculate the number of transactions per visit. This information is then combined to calculate the number of visits for each transaction number.",
+  "sql": "WITH max_trans AS ( SELECT V.user_id, V.visit_date, COUNT(T.transaction_date) AS max_transactions_count FROM Visits V LEFT JOIN Transactions T ON V.user_id = T.user_id AND V.visit_date = T.transaction_date GROUP BY V.user_id, V.visit_date ), seq AS ( SELECT 0 AS transactions_count, MAX(max_transactions_count) AS max_transactions_count FROM max_trans UNION ALL SELECT transactions_count + 1, max_transactions_count FROM seq WHERE transactions_count < max_transactions_count ), trans_count AS ( SELECT V.user_id, V.visit_date, COUNT(T.transaction_date) AS transactions_count FROM Visits V LEFT JOIN Transactions T ON V.user_id = T.user_id AND V.visit_date = T.transaction_date GROUP BY V.user_id, V.visit_date ) SELECT seq.transactions_count, COALESCE(COUNT(trans_count.user_id), 0) AS visits_count FROM seq LEFT JOIN trans_count ON seq.transactions_count = trans_count.transactions_count GROUP BY seq.transactions_count ORDER BY seq.transactions_count;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

@@ -1,0 +1,37 @@
+---
+Example of question thirty-eight
+---
+
+CREATE TABLE Product (
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(255) -- Adjust the size according to your needs
+)
+
+CREATE TABLE Sales (
+    product_id INT,
+    period_start DATE,
+    period_end DATE,
+    average_daily_sales INT,
+    PRIMARY KEY (product_id, period_start), -- Composite primary key
+    FOREIGN KEY (product_id) REFERENCES Product(product_id)
+)
+
+
+Write a solution to report the total sales amount of each item for each year, with corresponding product_name, product_id, report_year, and total_amount.
+
+Return the result table ordered by product_id and report_year.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Each query is based on a join between the Sales and Product tables. In each query, use CASE WHEN to ensure that the date range for calculating sales amounts falls within the specified year. Use the DATEDIFF function to calculate the days difference in sales dates and multiply it by the average daily sales volume to get the total sales amount for each sales record. Then use UNION ALL to merge the results of the two queries, and include the product ID, product name, reporting year and total sales amount in the results. The final results will be sorted by product ID and reporting year.",
+  "sql": "SELECT s.product_id, p.product_name, '2018' AS report_year, (DATEDIFF(day, CASE WHEN s.period_start > '2018-01-01' THEN s.period_start ELSE '2018-01-01' END, CASE WHEN s.period_end < '2018-12-31' THEN s.period_end ELSE '2018-12-31' END) + 1) * s.average_daily_sales AS total_amount FROM Sales s JOIN Product p ON s.product_id = p.product_id WHERE DATEDIFF(day, CASE WHEN s.period_start > '2018-01-01' THEN s.period_start ELSE '2018-01-01' END, CASE WHEN s.period_end < '2018-12-31' THEN s.period_end ELSE '2018-12-31' END) + 1 > 0 UNION ALL SELECT s.product_id, p.product_name, '2019' AS report_year, (DATEDIFF(day, CASE WHEN s.period_start > '2019-01-01' THEN s.period_start ELSE '2019-01-01' END, CASE WHEN s.period_end < '2019-12-31' THEN s.period_end ELSE '2019-12-31' END) + 1) * s.average_daily_sales AS total_amount FROM Sales s JOIN Product p ON s.product_id = p.product_id WHERE DATEDIFF(day, CASE WHEN s.period_start > '2019-01-01' THEN s.period_start ELSE '2019-01-01' END, CASE WHEN s.period_end < '2019-12-31' THEN s.period_end ELSE '2019-12-31' END) + 1 > 0;"
+}
+
+---
+
+Next I want to ask a question....
+
+---

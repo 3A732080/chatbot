@@ -1,0 +1,38 @@
+---
+Example of question twenty-five
+---
+
+CREATE TABLE Sales (
+    sale_id INT,
+    product_id INT,
+    year INT,
+    quantity INT,
+    price INT,
+    PRIMARY KEY (sale_id)
+)
+
+CREATE TABLE Product (
+    product_id INT,
+    product_name VARCHAR(10),
+    PRIMARY KEY (product_id)
+)
+
+
+Write a solution to select the product id, year, quantity, and price for the first year of every product sold.
+
+Return the resulting table in any order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Find the first sales year and sales information of each product from the Sales table, use CTE or subquery and MIN function to determine the earliest sales year, and perform JOIN based on product_id and year to select product ID, year, quantity and price.",
+  "sql": "WITH cte AS ( SELECT product_id, MIN(year) AS minyear FROM sales GROUP BY product_id ) SELECT s.product_id, s.year AS first_year, s.quantity, s.price FROM sales s INNER JOIN cte ON cte.product_id = s.product_id AND s.year = cte.minyear;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

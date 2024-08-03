@@ -1,0 +1,39 @@
+---
+Example of question eight
+---
+
+CREATE TABLE Suppliers (
+    sno VARCHAR(255),
+    sname VARCHAR(255),
+    status INT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Parts (
+    pno VARCHAR(255),
+    pname VARCHAR(255),
+    color VARCHAR(255),
+    weight FLOAT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Shipments (
+    sno VARCHAR(255),
+    pno VARCHAR(255),
+    qty INT
+)
+
+
+Question : Get full supplier information for suppliers who supply part P2.
+
+---
+output
+---
+{
+  "reasoning_process" : "Select the supplier from the Suppliers table, use the EXISTS subquery to check if there is a record in the Shipments table with the same number (sno) as the supplier in the Suppliers table, and the part number (pno) of the record must be 'P2' to ensure these The supplier has a record of corresponding part P2 in the Shipments table.",
+  "sql": "SELECT SX.sno, SX.sname, SX.status, SX.city from Suppliers SX WHERE EXISTS( SELECT SPX.sno, SPX.pno from Shipments SPX where SPX.sno = SX.sno AND SPX.pno = 'P2')"
+}
+
+---
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+---

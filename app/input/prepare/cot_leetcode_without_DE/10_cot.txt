@@ -1,0 +1,35 @@
+---
+Example of question ten
+---
+
+CREATE TABLE Activity (
+    machine_id INT,
+    process_id INT,
+    activity_type VARCHAR(10) CONSTRAINT CHK_Activity_activity_type CHECK (activity_type IN ('start', 'end')),
+    timestamp FLOAT
+)
+
+
+There is a factory website that has several machines each running the same number of processes. Write a solution to find the average time each machine takes to complete a process.
+
+The time to complete a process is the 'end' timestamp minus the 'start' timestamp. The average time is calculated by the total time to complete every process on the machine divided by the number of processes that were run.
+
+The resulting table should have the machine_id along with the average time as processing_time, which should be rounded to 3 decimal places.
+
+Return the result table in any order.
+
+
+---
+output
+---
+{
+  "query": "Questions asked",
+  "reasoning_process" : "Calculate the average time for each machine to complete the program. Use a subquery to average the start and end timestamps of each machine, subtract the average start time from the average end time, and get the average time for each machine to complete the program, and round the result to three decimal places.",
+  "sql": "select a.machine_id, round((select avg(a1.timestamp) from Activity a1 where a1.activity_type = 'end' and a1.machine_id = a.machine_id) - (select avg(a1.timestamp) from Activity a1 where a1.activity_type = 'start' and a1.machine_id = a.machine_id) ,3) as processing_time from Activity a group by a.machine_id;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

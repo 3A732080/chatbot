@@ -1,0 +1,29 @@
+
+---
+Example of question twelve
+---
+
+CREATE TABLE Followers (
+    user_id INT,
+    follower_id INT
+)
+
+
+Write a solution that will, for each user, return the number of followers.
+
+Return the result table ordered by user_id in ascending order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Use the GROUP BY clause to group the Followers table by user_id, and use the COUNT function to count the number of follower_ids in each group. Then select user_id and COUNT(follower_id) as the result and name it followers_count. Use the GROUP BY clause to group by user_id and finally sort by user_id in ascending order.",
+  "sql": "SELECT user_id,count(follower_id) as followers_count FROM Followers GROUP BY user_id;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

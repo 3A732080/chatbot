@@ -1,0 +1,23 @@
+CREATE TABLE UserActivity (
+    username VARCHAR(30),
+    activity VARCHAR(30),
+    startDate DATE,
+    endDate DATE
+)
+
+
+Write an SQL query to show the second most recent activity of each user.
+
+If the user only has one activity, return that one. 
+
+A user can't perform more than one activity at the same time. Return the result table in any order.
+
+
+---
+
+Please reply in json format according to the above structure, without redundant output and escape characters, so that I can get the MS SQL syntax for testing:
+example(No escape characters):
+
+{
+  "sql": " "
+}

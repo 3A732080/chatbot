@@ -1,0 +1,20 @@
+CREATE TABLE Customer (
+    id INT,
+    name VARCHAR(25),
+    referee_id INT NULL
+)
+
+
+Find the names of the customer that are not referred by the customer with id = 2.
+
+Return the result table in any order.
+
+
+---
+
+Please reply in json format according to the above structure, without redundant output and escape characters, so that I can get the MS SQL syntax for testing:
+example(No escape characters):
+
+{
+  "sql": " "
+}

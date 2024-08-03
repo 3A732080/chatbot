@@ -1,0 +1,33 @@
+CREATE TABLE Movies (
+    movie_id INT,
+    title VARCHAR(30)
+)
+
+CREATE TABLE Users (
+    user_id INT,
+    name VARCHAR(30)
+)
+
+CREATE TABLE MovieRating (
+    movie_id INT,
+    user_id INT,
+    rating INT,
+    created_at DATE
+)
+
+
+Write a solution to:
+
+Find the name of the user who has rated the greatest number of movies. In case of a tie, return the lexicographically smaller user name.
+Find the movie name with the highest average rating in February 2020. In case of a tie, return the lexicographically smaller movie name.
+
+
+---
+
+Please reply in json format according to the above structure, without redundant output and escape characters, so that I can get the MS SQL syntax for testing:
+example(No escape characters):
+
+{
+  "reasoning_process" : "Considering that we are using SQL Server, please describe the reasoning process for establishing the corresponding SQL query for the problem based on the given table information. Explain your reasoning steps first.",
+  "sql": " "
+}

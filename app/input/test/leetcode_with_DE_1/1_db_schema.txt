@@ -1,0 +1,22 @@
+-- 檢查Courses表是否存在，若不存在則創建
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Courses]') AND type in (N'U'))
+BEGIN
+    CREATE TABLE Courses (
+        student VARCHAR(255),
+        class VARCHAR(255)
+    )
+END
+
+-- 清空Courses表中的數據
+TRUNCATE TABLE Courses
+
+-- 向Courses表插入數據
+INSERT INTO Courses (student, class) VALUES ('A', 'Math')
+INSERT INTO Courses (student, class) VALUES ('B', 'English')
+INSERT INTO Courses (student, class) VALUES ('C', 'Math')
+INSERT INTO Courses (student, class) VALUES ('D', 'Biology')
+INSERT INTO Courses (student, class) VALUES ('E', 'Math')
+INSERT INTO Courses (student, class) VALUES ('F', 'Computer')
+INSERT INTO Courses (student, class) VALUES ('G', 'Math')
+INSERT INTO Courses (student, class) VALUES ('H', 'Math')
+INSERT INTO Courses (student, class) VALUES ('I', 'Math')

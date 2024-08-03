@@ -1,0 +1,23 @@
+-- 檢查並創建 Employees 表
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Employees]') AND type = 'U')
+BEGIN
+    CREATE TABLE Employees (
+        employee_id INT,
+        name VARCHAR(20),
+        manager_id INT NULL, -- 允許 manager_id 為 NULL
+        salary INT
+    );
+END;
+
+-- 清空 Employees 表的數據
+TRUNCATE TABLE Employees;
+
+-- 插入數據到 Employees 表
+-- 注意，使用 NULL 代替 'None'
+INSERT INTO Employees (employee_id, name, manager_id, salary) VALUES
+(3, 'Mila', 9, 60301),
+(12, 'Antonella', NULL, 31000), -- 將 'None' 替換為 NULL
+(13, 'Emery', NULL, 67084), -- 將 'None' 替換為 NULL
+(1, 'Kalel', 11, 21241),
+(9, 'Mikaela', NULL, 50937), -- 將 'None' 替換為 NULL
+(11, 'Joziah', 6, 28485);

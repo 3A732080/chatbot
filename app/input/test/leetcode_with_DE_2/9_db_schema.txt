@@ -1,0 +1,16 @@
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'UserActivity')
+BEGIN
+    CREATE TABLE UserActivity (
+        username VARCHAR(30),
+        activity VARCHAR(30),
+        startDate DATE,
+        endDate DATE
+    );
+END;
+
+TRUNCATE TABLE UserActivity;
+
+INSERT INTO UserActivity (username, activity, startDate, endDate) VALUES ('Alice', 'Travel', '2020-02-12', '2020-02-20');
+INSERT INTO UserActivity (username, activity, startDate, endDate) VALUES ('Alice', 'Dancing', '2020-02-21', '2020-02-23');
+INSERT INTO UserActivity (username, activity, startDate, endDate) VALUES ('Alice', 'Travel', '2020-02-24', '2020-02-28');
+INSERT INTO UserActivity (username, activity, startDate, endDate) VALUES ('Bob', 'Travel', '2020-02-11', '2020-02-18');

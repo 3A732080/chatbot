@@ -1,0 +1,39 @@
+---
+Example of question fifteen
+---
+
+CREATE TABLE Suppliers (
+    sno VARCHAR(255),
+    sname VARCHAR(255),
+    status INT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Parts (
+    pno VARCHAR(255),
+    pname VARCHAR(255),
+    color VARCHAR(255),
+    weight FLOAT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Shipments (
+    sno VARCHAR(255),
+    pno VARCHAR(255),
+    qty INT
+)
+
+
+Question : Get supplier numbers for suppliers who are located in the same city as suppliers S1.
+
+---
+output
+---
+{
+  "reasoning_process" : "First, use a subquery (named TMP) to obtain the city information of supplier S1 from the Suppliers table. Then the main query selects suppliers from the Suppliers table and compares them with the city information in TMP to filter out all supplier numbers in the city that are the same as S1.",
+  "sql": "select sno from Suppliers s, (select city from Suppliers where Suppliers.sno='S1')TMP where s.city = TMP.city"
+}
+
+---
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+---

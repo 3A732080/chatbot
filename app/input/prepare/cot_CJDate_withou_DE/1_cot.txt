@@ -1,0 +1,40 @@
+I hope you can help me solve some SQL problems. I will provide you with some examples to consider, each scenario using the same database. Consider the questions and repositories outlined below and describe the reasoning process used to address these questions. After that, I'll pose a SQL question and hope you can provide a solution and the rationale behind it.
+---
+Example of first question
+---
+
+CREATE TABLE Suppliers (
+    sno VARCHAR(255),
+    sname VARCHAR(255),
+    status INT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Parts (
+    pno VARCHAR(255),
+    pname VARCHAR(255),
+    color VARCHAR(255),
+    weight FLOAT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Shipments (
+    sno VARCHAR(255),
+    pno VARCHAR(255),
+    qty INT
+)
+
+
+Question : For all parts, get the part number and the weight of that part in grams, where weights are given in table Parts in pounds
+
+---
+output
+---
+{
+  "reasoning_process" : "Get the part number (pno) for all parts and their weight converted to grams (since 1 pound equals 454 grams, multiply the weight by 454). This query will select the pno and converted weight (gmwt) of each part from the Parts table.",
+  "sql": "select Parts.pno, Parts.weight * 454 as gmwt from Parts ;"
+}
+
+---
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+---

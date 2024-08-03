@@ -1,0 +1,54 @@
+---
+Example of question thirty-five
+---
+
+{
+  "query": "Write a solution to find the prices of all products on 2019-08-16. Assume the price of all products before any change is 10. Return the result table in any order.",
+  "database_structure": {
+    "Products": {
+      "structure": [
+        {"name": "product_id", "DataType": "int"},
+        {"name": "new_price", "DataType": "int"},
+        {"name": "change_date", "DataType": "date"}
+      ],
+      "PrimaryKey": ["product_id", "change_date"],
+      "Explanation" : "(product_id, change_date) is the primary key (combination of columns with unique values) of this table. Each row of this table indicates that the price of some product was changed to a new price at some date.",
+      "data": [
+        {"product_id": 1, "new_price": 20, "change_date": "2019-08-14"},
+        {"product_id": 2, "new_price": 50, "change_date": "2019-08-14"},
+        {"product_id": 1, "new_price": 30, "change_date": "2019-08-15"},
+        {"product_id": 1, "new_price": 35, "change_date": "2019-08-16"},
+        {"product_id": 2, "new_price": 65, "change_date": "2019-08-17"},
+        {"product_id": 3, "new_price": 20, "change_date": "2019-08-18"}
+      ]
+    }
+  },
+  "prompt_for_CoT": "Please explain the process from problem to generating SQL queries following the chain of thought method.",
+  "output_template": {
+    "columns": [
+      {"name": "product_id", "DataType": "int"},
+      {"name": "price", "DataType": "int"}
+    ],
+    "rows": [
+      {"product_id": 2, "price": 50},
+      {"product_id": 1, "price": 35},
+      {"product_id": 3, "price": 10}
+    ]
+  }
+}
+
+---
+
+Please reply in json format according to the above structure, without redundant output and escape characters, so that I can get the MS SQL syntax for testing:
+example(No escape characters):
+
+{
+  "reasoning_process" : "Find prices for all products on 2019-08-16. Assume that all products have a price of 10 before any price changes. Identify the last price change for each product before 2019-08-16. For products that have a recorded price change after this date, treat their price as 10. Use UNION ALL to combine the results of two scenarios: one to find products with the last price change, and one with no price change records or all price changes recorded after this date.",
+  "sql": "SELECT p.product_id, p.new_price AS price FROM Products p WHERE EXISTS ( SELECT product_id, MAX(change_date) AS last_change FROM Products WHERE change_date <= '2019-08-16' GROUP BY product_id HAVING product_id = p.product_id AND MAX(change_date) = p.change_date ) UNION ALL SELECT DISTINCT(p.product_id), 10 AS price FROM Products p WHERE product_id IN ( SELECT product_id FROM Products GROUP BY product_id HAVING MIN(change_date) > '2019-08-16' );"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

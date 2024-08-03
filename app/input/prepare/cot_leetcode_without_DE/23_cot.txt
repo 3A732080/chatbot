@@ -1,0 +1,36 @@
+---
+Example of question twenty-three
+---
+
+CREATE TABLE Sales (
+    sale_id INT,
+    product_id INT,
+    year INT,
+    quantity INT,
+    price INT
+)
+
+CREATE TABLE Product (
+    product_id INT,
+    product_name VARCHAR(10)
+)
+
+
+Write a solution to report the product_name, year, and price for each sale_id in the Sales table.
+
+Return the resulting table in any order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Extract and join product ID and product name from Sales table and Product table, use LEFT JOIN to get product name, select product_name, year and price fields.",
+  "sql": "select Product.product_name, Sales.year, Sales.price from Sales left join Product on (Sales.product_id = Product.product_id);"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

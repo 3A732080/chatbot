@@ -1,0 +1,30 @@
+I hope you can assist me in solving some SQL issues. I will present you with examples to ponder, with each scenario involving a distinct database, and every problem being independent. Please consider the problems and databases outlined below, and describe your reasoning process for resolving them. Afterward, I will pose SQL questions, and I would like you to provide both the solutions and the rationale behind them.
+---
+Example of first question
+---
+
+CREATE TABLE Products (
+    product_id INT,
+    low_fats CHAR(1) CONSTRAINT CHK_Products_low_fats CHECK (low_fats IN ('Y', 'N')),
+    recyclable CHAR(1) CONSTRAINT CHK_Products_recyclable CHECK (recyclable IN ('Y', 'N'))
+)
+
+
+Write a solution to find the ids of products that are both low fat and recyclable.
+
+Return the result table in any order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Select product_id in the Products table, where low_fats is 'Y' and recyclable is also 'Y', and finally return these qualified product_ids.",
+  "sql": "SELECT product_id FROM Products WHERE low_fats = 'Y' AND recyclable = 'Y';"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

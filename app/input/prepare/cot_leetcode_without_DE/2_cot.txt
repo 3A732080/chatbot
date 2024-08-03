@@ -1,0 +1,36 @@
+---
+Example of second question
+---
+
+CREATE TABLE Prices (
+    product_id INT,
+    start_date DATE,
+    end_date DATE,
+    price INT
+)
+
+CREATE TABLE UnitsSold (
+    product_id INT,
+    purchase_date DATE,
+    units INT
+)
+
+
+Write a solution to find the average selling price for each product. average_price should be rounded to 2 decimal places.
+
+Return the result table in any order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Use LEFT JOIN to join the Prices table and the UnitsSold table so that the sales and sales volume of each product can be calculated during the pricing period, and then use GROUP BY according to the product_id of the product to perform group aggregation to calculate the total sales sum of each product. Total sales, and finally divide total sales by total sales and use the ROUND function to round the result to two decimal places to get the average selling price of each product.",
+  "sql": "SELECT P.product_id, ISNULL(ROUND(CAST(SUM(p.price*u.units) AS DECIMAL(10,2))/SUM(u.units),2),0) AS average_price FROM Prices P LEFT JOIN UnitsSOld U ON P.product_id = U.product_id AND U.purchase_date BETWEEN P.start_date AND P.end_date GROUP BY P.product_id;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

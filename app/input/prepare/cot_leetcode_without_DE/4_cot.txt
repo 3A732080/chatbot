@@ -1,0 +1,31 @@
+---
+Example of fourth question
+---
+
+CREATE TABLE Views (
+    article_id INT,
+    author_id INT,
+    viewer_id INT,
+    view_date DATE
+);
+
+
+Write a solution to find all the authors that viewed at least one of their own articles.
+
+Return the result table sorted by id in ascending order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Upon request, each view needs to be checked and checked to see if the viewer is the author of the article. Therefore, use the WHERE clause to select those records that meet the condition of "the viewer and the author are the same person", then in the SELECT clause, use DISTINCT to remove duplicate author IDs, and finally sort in ascending order according to the author's ID (that is, author_id) sort",
+  "sql": "Select distinct author_id as id from Views where  author_id = viewer_id order by author_id asc;"
+}
+
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

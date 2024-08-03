@@ -1,0 +1,36 @@
+---
+Example of question twenty-eight
+---
+
+CREATE TABLE Signups (
+    user_id INT,
+    time_stamp DATETIME
+)
+
+CREATE TABLE Confirmations (
+    user_id INT,
+    time_stamp DATETIME,
+    action VARCHAR(20) CHECK (action IN ('confirmed', 'timeout'))
+)
+
+
+The confirmation rate of a user is the number of 'confirmed' messages divided by the total number of requested confirmation messages. The confirmation rate of a user that did not request any confirmation messages is 0. Round the confirmation rate to two decimal places.
+
+Write a solution to find the confirmation rate of each user.
+
+Return the result table in any order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Join the Signups table with the Confirmations table using LEFT JOIN, and use the AVG function to calculate the average number of confirmed messages per consumer, and the IIF function to convert the 'confirmed' action to 1.0 and other actions to 0.0. Then use the ROUND function to round the confirmation rate to two decimal places. Finally, use the GROUP BY clause to group by user_id to ensure that each user has a corresponding confirmation rate.",
+  "sql": "SELECT s1.user_id, ROUND(AVG(IIF(c.action='confirmed',1.0,0.0)), 2) as confirmation_rate FROM Signups s1 LEFT JOIN Confirmations c ON s1.user_id = c.user_id GROUP BY s1.user_id;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

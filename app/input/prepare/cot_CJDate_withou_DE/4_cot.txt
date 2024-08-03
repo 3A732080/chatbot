@@ -1,0 +1,39 @@
+---
+Example of question four
+---
+
+CREATE TABLE Suppliers (
+    sno VARCHAR(255),
+    sname VARCHAR(255),
+    status INT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Parts (
+    pno VARCHAR(255),
+    pname VARCHAR(255),
+    color VARCHAR(255),
+    weight FLOAT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Shipments (
+    sno VARCHAR(255),
+    pno VARCHAR(255),
+    qty INT
+)
+
+
+Question : Get all combinations of supplier and part information where the supplier and part concerned are collocated, but omitting suppliers with status 20.
+
+---
+output
+---
+{
+  "reasoning_process" : "Obtain all possible combinations of suppliers and parts by performing Cartesian product from the Suppliers table and the Parts table, and filter the combinations that are located in the same city and whose supplier status is not 20",
+  "sql": "SELECT S.*, P.pno, P.pname, P.city FROM Suppliers S, Parts P WHERE S.City = P.City AND S.Status <> 20"
+}
+
+---
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+---

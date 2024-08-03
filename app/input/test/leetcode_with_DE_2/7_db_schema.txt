@@ -1,0 +1,18 @@
+-- 檢查Seat表是否存在，若不存在則創建
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Seat]') AND type in (N'U'))
+BEGIN
+    CREATE TABLE Seat (
+        id INT,
+        student VARCHAR(255)
+    )
+END
+
+-- 清空Seat表中的數據
+TRUNCATE TABLE Seat
+
+-- 向Seat表插入數據
+INSERT INTO Seat (id, student) VALUES (1, 'Abbot')
+INSERT INTO Seat (id, student) VALUES (2, 'Doris')
+INSERT INTO Seat (id, student) VALUES (3, 'Emerson')
+INSERT INTO Seat (id, student) VALUES (4, 'Green')
+INSERT INTO Seat (id, student) VALUES (5, 'Jeames')

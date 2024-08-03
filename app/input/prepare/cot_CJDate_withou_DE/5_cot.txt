@@ -1,0 +1,39 @@
+---
+Example of question five
+---
+
+CREATE TABLE Suppliers (
+    sno VARCHAR(255),
+    sname VARCHAR(255),
+    status INT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Parts (
+    pno VARCHAR(255),
+    pname VARCHAR(255),
+    color VARCHAR(255),
+    weight FLOAT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Shipments (
+    sno VARCHAR(255),
+    pno VARCHAR(255),
+    qty INT
+)
+
+
+Question : Get all pairs of city names such that a supplier located in the first city supplies a part stored in the second city.
+
+---
+output
+---
+{
+  "reasoning_process" : "Connect the three tables Suppliers, Shipments and Parts through the JOIN operation, match them based on the supplier number (sno) and part number (pno), and then filter out the situation where the suppliers and parts are located in different cities.",
+  "sql": "SELECT DISTINCT S.city AS scity, P.city AS pcity FROM Suppliers S JOIN Shipments SH ON S.sno = SH.sno JOIN Parts P ON SH.pno = P.pno WHERE S.city <> P.city;"
+}
+
+---
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+---

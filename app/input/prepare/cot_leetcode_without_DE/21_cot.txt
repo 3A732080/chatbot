@@ -1,0 +1,35 @@
+---
+Example of the twenty-one question
+---
+
+CREATE TABLE Products (
+    product_id INT,
+    product_name VARCHAR(40),
+    product_category VARCHAR(40)
+)
+
+CREATE TABLE Orders (
+    product_id INT,
+    order_date DATE,
+    unit INT
+)
+
+
+Write a solution to get the names of products that have at least 100 units ordered in February 2020 and their amount.
+
+Return the result table in any order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Find all products with an order volume of at least 100 units in February 2020 and their total order volume. Connect the Products and Orders tables through JOIN, and match the orders of each product based on product_id. Use WHERE to filter out orders for February 2020 and use GROUP BY to group the product names to calculate the total order quantity for each product. HAVING filters out products with a total order quantity of at least 100, and finally selects the product name and its corresponding total order quantity.",
+  "sql": "select product_name,sum(unit) as unit from products p join orders o on p.product_id=o.product_id where order_date like '%2020-02-%' group by product_name having sum(unit)>=100;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

@@ -1,0 +1,41 @@
+---
+Example of question twenty-one
+---
+
+CREATE TABLE Suppliers (
+    sno VARCHAR(255),
+    sname VARCHAR(255),
+    status INT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Parts (
+    pno VARCHAR(255),
+    pname VARCHAR(255),
+    color VARCHAR(255),
+    weight FLOAT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Shipments (
+    sno VARCHAR(255),
+    pno VARCHAR(255),
+    qty INT
+)
+
+
+Question : Get the total quantity of part P2 supplied.
+
+---
+output
+---
+{
+  "reasoning_process" : "By filtering the part number equal to 'P2', calculate the total number of all matching records in the shipments table",
+  "sql": "Select sum(qty) from shipments where pno = 'p2'"
+}
+
+---
+
+Next I want to ask a question....
+
+---

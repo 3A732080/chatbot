@@ -1,0 +1,35 @@
+---
+Example of question twenty-four
+---
+
+CREATE TABLE Sales (
+    sale_id INT PRIMARY KEY,
+    product_id INT,
+    year INT,
+    quantity INT,
+    price INT,
+    FOREIGN KEY (product_id) REFERENCES Product(product_id)
+);
+
+CREATE TABLE Product (
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(255)
+)
+
+
+Write an SQL query that reports the total quantity sold for every product id.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Use the SUM function to calculate the sum of sales quantities for each product ID and use the GROUP BY clause to group the Sales table by product ID. Then select product_id and SUM(quantity) as the result and name it total_quantity. Finally, use the GROUP BY clause to group the Sales table by product_id so that the total sales quantity for each product ID can be calculated.",
+  "sql": "select product_id, sum(quantity) total_quantity from Sales group by 1;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

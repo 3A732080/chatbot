@@ -1,0 +1,31 @@
+---
+Example of question seventeen
+---
+
+CREATE TABLE Employee (
+    employee_id INT,
+    department_id INT,
+    primary_flag VARCHAR(1) CONSTRAINT CHK_Employee_primary_flag CHECK (primary_flag IN ('Y', 'N'))
+)
+
+
+Employees can belong to multiple departments. When the employee joins other departments, they need to decide which department is their primary department. Note that when an employee belongs to only one department, their primary column is 'N'.
+
+Write a solution to report all the employees with their primary department. For employees who belong to one department, report their only department.
+
+Return the result table in any order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Filters for employees who belong to only one department and reports their department; for employees who belong to multiple departments, reports their primary department (primary_flag is 'Y'). Use GROUP BY and HAVING to filter single department employees and select records with primary department marked 'Y' directly from the employees table. Use UNION to combine the query results from both cases.",
+  "sql": "select employee_id, max(department_id) [department_id] from employee group by employee_id having count(department_id) = 1 union select employee_id, department_id [department_id] from employee where primary_flag = 'Y' group by employee_id, department_id;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

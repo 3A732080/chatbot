@@ -1,0 +1,37 @@
+---
+Example of question eleven
+---
+
+CREATE TABLE Students (
+    student_id INT,
+    student_name VARCHAR(20)
+)
+
+CREATE TABLE Subjects (
+    subject_name VARCHAR(20)
+)
+
+CREATE TABLE Examinations (
+    student_id INT,
+    subject_name VARCHAR(20)
+)
+
+
+Write a solution to find the number of times each student attended each exam.
+
+Return the result table ordered by student_id and subject_name.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Find out how many times each student took each exam, sorted by student ID and subject name. By combining the information of students, subjects and exams, use cross-join to generate all possible combinations of students and subjects, and left-join the exam table to determine the actual number of exams taken, use grouping to count the number of exams for each combination, and finally count the number of exams by student Sort by ID and account name.",
+  "sql": "SELECT si.student_id, si.student_name, sn.subject_name, COUNT(sun.subject_name) AS attended_exams FROM Students si cross join Subjects sn LEFT JOIN Examinations sun ON si.student_id = sun.student_id AND sn.subject_name = sun.subject_name GROUP BY si.student_id, si.student_name, sn.subject_name ORDER BY si.student_id, sn.subject_name;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

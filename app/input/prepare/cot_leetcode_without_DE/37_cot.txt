@@ -1,0 +1,36 @@
+---
+Example of question thirty-seven
+---
+
+CREATE TABLE Salary (
+    id INT PRIMARY KEY,
+    employee_id INT,
+    amount INT,
+    pay_date DATE,
+    FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
+)
+
+CREATE TABLE Employee (
+    employee_id INT PRIMARY KEY,
+    department_id INT
+)
+
+
+Find the comparison result (higher/lower/same) of the average salary of employees in a department to the company's average salary.
+
+Return the result table in any order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Use CTE (Common Table Expression) to calculate the average monthly salary for each department and the average monthly salary for the company as a whole. Use the CONVERT function to convert dates to YYYY-MM format to calculate average salaries grouped by month. Use the AVG function to calculate the average monthly salary for each department, and also calculate the average monthly salary for the company as a whole. Then in the outermost query, compare the difference between the department's average salary and the company's overall average salary. According to the comparison result, use the CASE function to return the result. If the department's average salary is higher than the company's overall average salary, it returns 'higher', if the department's average salary is lower than the company's overall average salary, it returns 'lower', otherwise it returns 'same'. Finally sort the results by department and month.",
+  "sql": "WITH MonthlySalaries AS ( SELECT CONVERT(VARCHAR(7), s.pay_date, 120) AS pay_month, -- 將日期轉換為YYYY-MM格式 e.department_id, AVG(CAST(s.amount AS DECIMAL(10, 2))) OVER(PARTITION BY CONVERT(VARCHAR(7), s.pay_date, 120)) AS company_avg_salary, AVG(CAST(s.amount AS DECIMAL(10, 2))) OVER(PARTITION BY e.department_id, CONVERT(VARCHAR(7), s.pay_date, 120)) AS dept_avg_salary FROM salary s JOIN employee e ON s.employee_id = e.employee_id ) SELECT pay_month, department_id, CASE WHEN dept_avg_salary > company_avg_salary THEN 'higher' WHEN dept_avg_salary < company_avg_salary THEN 'lower' ELSE 'same' END AS comparison FROM (SELECT DISTINCT pay_month, department_id, dept_avg_salary, company_avg_salary FROM MonthlySalaries) AS UniqueMonthlySalaries ORDER BY department_id, pay_month;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  chatbot-python-service:
+    image: python:3.9-buster
+    volumes:
+      - ./app:/app
+    working_dir: /app
+    tty: true
+    build:
+      context: ./app
+
+  chatbot-mssql:
+    image: mcr.microsoft.com/azure-sql-edge
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong!Passw0rd
+    ports:
+      - "1430:1433"
+    volumes:
+      - ./sql_data:/var/opt/mssql

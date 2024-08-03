@@ -1,0 +1,34 @@
+---
+Example of question eight
+---
+
+CREATE TABLE Visits (
+    visit_id INT,
+    customer_id INT
+)
+
+CREATE TABLE Transactions (
+    transaction_id INT,
+    visit_id INT,
+    amount INT
+)
+
+
+Write a solution to find the IDs of the users who visited without making any transactions and the number of times they made these types of visits.
+
+Return the result table sorted in any order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Find users who visited but did not make any transactions and their number of visits. Associate the access and transaction tables, count the number of visits without transactions for each user, and filter out the access records without transactions.",
+  "sql": "SELECT v.customer_id,COUNT(t.transaction_id) AS count_no_trans FROM Visits v LEFT JOIN Transactions t ON v.visit_id=t.visit_id GROUP BY v.customer_id HAVING COUNT(t.transaction_id)=0;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

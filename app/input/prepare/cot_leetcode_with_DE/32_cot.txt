@@ -1,0 +1,52 @@
+---
+Example of question thirty-two
+---
+
+{
+  "query": "Write a solution to calculate the number of bank accounts for each salary category. The salary categories are: "Low Salary": All the salaries strictly less than $20000. "Average Salary": All the salaries in the inclusive range [$20000, $50000]. "High Salary": All the salaries strictly greater than $50000. The result table must contain all three categories. If there are no accounts in a category, return 0. Return the result table in any order.",
+  "database_structure": {
+    "Accounts": {
+      "structure": [
+        {"name": "account_id", "DataType": "int"},
+        {"name": "income", "DataType": "int"}
+      ],
+      "PrimaryKey": "account_id",
+      "Explanation" : "account_id is the primary key (column with unique values) for this table. Each row contains information about the monthly income for one bank account.",
+      "data": [
+        {"account_id": 3, "income": 108939},
+        {"account_id": 2, "income": 12747},
+        {"account_id": 8, "income": 87709},
+        {"account_id": 6, "income": 91796}
+      ]
+    }
+  },
+  "prompt_for_CoT": "Please explain the process from problem to generating SQL queries following the chain of thought method.",
+  "output_template": {
+    "columns": [
+      {"name": "category", "DataType": "int"},
+      {"name": "accounts_count", "DataType": "float"}
+    ],
+    "rows": [
+      {"category": "Low Salary", "accounts_count": 1},
+      {"category": "Average Salary", "accounts_count": 0},
+      {"category": "High Salary", "accounts_count": 3}
+    ],
+    "Explanation": ["Low Salary: Account 2.", "Average Salary: No accounts.", "High Salary: Accounts 3, 6, and 8."]
+  }
+}
+
+---
+
+Please reply in json format according to the above structure, without redundant output and escape characters, so that I can get the MS SQL syntax for testing:
+example(No escape characters):
+
+{
+  "reasoning_process" : "Calculate the number of bank accounts for each salary category. Use CTE or subquery to categorize each record by salary range. Build a static table or CTE that contains all salary categories to ensure all categories are included in the results. Use a LEFT JOIN to connect this static table or CTE with the classification results from the first step to count the number of accounts in each category. Use GROUP BY to group categories and count the number of accounts in each category.",
+  "sql": "WITH CTE AS (select case when income < 20000 THEN 'Low Salary' when income > 50000 THEN 'High Salary' ELSE 'Average Salary' END AS category from accounts), main_cat as (select 'Low Salary' as category union select 'Average Salary' as category union select 'High Salary' as category) select main_cat.category, count(CTE.category) as accounts_count from main_cat left join CTE on main_cat.category = CTE.category group by main_cat.category;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

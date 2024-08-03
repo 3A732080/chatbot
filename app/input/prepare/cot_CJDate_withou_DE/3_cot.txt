@@ -1,0 +1,39 @@
+---
+Example of third question
+---
+
+CREATE TABLE Suppliers (
+    sno VARCHAR(255),
+    sname VARCHAR(255),
+    status INT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Parts (
+    pno VARCHAR(255),
+    pname VARCHAR(255),
+    color VARCHAR(255),
+    weight FLOAT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Shipments (
+    sno VARCHAR(255),
+    pno VARCHAR(255),
+    qty INT
+)
+
+
+Question : Get all combinations of supplier and part information such that the supplier and part in question are colocated.
+
+---
+output
+---
+{
+  "reasoning_process" : "Select data from the Suppliers and Parts tables, and the condition is that the supplier and parts are located in the same city (Suppliers.city equals Parts.city). The query will return all the information of all suppliers located in the same city as well as the part number (pno), part name (pname), color (color) and weight (weight) of the relevant parts. This effectively finds all geographically overlapping supplier and part details.",
+  "sql": "select Suppliers.*, Parts.pno, Parts.pname, Parts.color, Parts.weight from Suppliers, Parts where Suppliers.city = Parts.city ;"
+}
+
+---
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+---

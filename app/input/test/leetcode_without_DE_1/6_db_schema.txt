@@ -1,0 +1,23 @@
+-- 檢查 Employee 表是否存在，如果不存在則創建
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'Employee') AND type in (N'U'))
+BEGIN
+    CREATE TABLE Employee (
+        id INT,
+        name VARCHAR(255),
+        department VARCHAR(255),
+        managerId INT NULL  -- 假設 managerId 可能為 NULL
+    );
+END
+
+-- 由於 MSSQL 不支持直接在插入語句中使用 'None' 來代表空值，我們使用 NULL 代替 'None'
+-- 清空 Employee 表的數據
+TRUNCATE TABLE Employee;
+
+-- 插入數據到 Employee 表
+INSERT INTO Employee (id, name, department, managerId) VALUES
+(101, 'John', 'A', NULL), -- 用 NULL 代替 'None'
+(102, 'Dan', 'A', 101),
+(103, 'James', 'A', 101),
+(104, 'Amy', 'A', 101),
+(105, 'Anne', 'A', 101),
+(106, 'Ron', 'B', 101);

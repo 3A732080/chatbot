@@ -1,0 +1,30 @@
+
+---
+Example of question nine
+---
+
+CREATE TABLE Weather (
+    id INT,
+    recordDate DATE,
+    temperature INT
+)
+
+
+Write a solution to find all dates' Id with higher temperatures compared to its previous dates (yesterday).
+
+Return the result table in any order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "You need to compare the temperature of each date with the temperature of the previous day and find the IDs of all the days with a higher temperature than the previous day. Use a Self Join to compare the Weather table itself to the previous day's records, denoted w1 and w2 respectively. Then use the DATEDIFF function to calculate the date difference between the recordDate of w2 and the recordDate of w1. If the difference is 1, it means that the date of w2 is the day before w1. Finally, in the WHERE clause, we add the condition w2.temperature > w1.temperature and select the ID of w2 to ensure that only records with a higher temperature than the previous day are selected.",
+  "sql": "SELECT w2.id FROM Weather w1 JOIN Weather w2 ON DATEDIFF(day,w1.recordDate, w2.recordDate) = 1 WHERE w2.temperature > w1.temperature;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

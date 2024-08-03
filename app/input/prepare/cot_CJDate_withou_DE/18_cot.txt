@@ -1,0 +1,39 @@
+---
+Example of question eighteen
+---
+
+CREATE TABLE Suppliers (
+    sno VARCHAR(255),
+    sname VARCHAR(255),
+    status INT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Parts (
+    pno VARCHAR(255),
+    pname VARCHAR(255),
+    color VARCHAR(255),
+    weight FLOAT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Shipments (
+    sno VARCHAR(255),
+    pno VARCHAR(255),
+    qty INT
+)
+
+
+Question : Get the number of shipments for part P2.
+
+---
+output
+---
+{
+  "reasoning_process" : "Use the count(*) function to count all eligible records in the shipments table to obtain the shipment quantity of part P2.",
+  "sql": "Select count(*) from shipments where pno = 'p2'"
+}
+
+---
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+---

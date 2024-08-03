@@ -1,0 +1,21 @@
+CREATE TABLE Employees (
+    employee_id INT,
+    name VARCHAR(20),
+    manager_id INT NULL,
+    salary INT
+)
+
+
+Find the IDs of the employees whose salary is strictly less than $30000 and whose manager left the company. When a manager leaves the company, their information is deleted from the Employees table, but the reports still have their manager_id set to the manager that left.
+
+Return the result table ordered by employee_id.
+
+
+---
+
+Please reply in json format according to the above structure, without redundant output and escape characters, so that I can get the MS SQL syntax for testing:
+example(No escape characters):
+
+{
+  "sql": " "
+}

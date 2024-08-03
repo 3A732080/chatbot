@@ -1,0 +1,40 @@
+---
+Example of second question
+---
+
+CREATE TABLE Suppliers (
+    sno VARCHAR(255),
+    sname VARCHAR(255),
+    status INT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Parts (
+    pno VARCHAR(255),
+    pname VARCHAR(255),
+    color VARCHAR(255),
+    weight FLOAT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Shipments (
+    sno VARCHAR(255),
+    pno VARCHAR(255),
+    qty INT
+)
+
+
+Question : Get the part number and the weight in grams for each part with weight > 10,000 grams.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "In order to convert pounds to grams, multiply the weight in the Parts data table by 454, and set conditions to filter out parts whose converted weight exceeds 10,000 grams. Finally, select these qualified part numbers and calculated weights.",
+  "sql": "select Parts.pno, Parts.weight * 454 as gmwt from Parts where Parts.weight * 454 > 10000.0 ;"
+}
+
+---
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+---

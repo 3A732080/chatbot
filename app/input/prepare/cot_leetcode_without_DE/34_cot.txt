@@ -1,0 +1,30 @@
+---
+Example of question thirty-four
+---
+
+CREATE TABLE RequestAccepted (
+    requester_id INT NOT NULL,
+    accepter_id INT NULL,
+    accept_date DATE NULL
+)
+
+
+Write a solution to find the people who have the most friends and the most friends number.
+
+The test cases are generated so that only one person has the most friends.
+
+---
+
+Please reply in json format according to the above structure, without redundant output and escape characters, so that I can get the MS SQL syntax for testing:
+example(No escape characters):
+
+{
+  "reasoning_process" : "Find the person who has the most friends and their number of friends. Friendship relationships are defined by request acceptance in the RequestAccepted table, and acceptance by either party counts as mutual friends. Use a CTE or subquery to combine the requester_id and accepter_id into a single id column, treating each occurrence of each person as a sender or receiver, as a friend relationship. Calculate the total number of friends for each id from the merged results, using the COUNT(*) function to count. Use a GROUP BY statement to group the ids so you can count the number of friends each person has. Use ORDER BY and TOP 1 (or equivalent LIMIT 1) to select the person with the most friends and their number of friends.",
+  "sql": "with cte as (select  requester_id as id from RequestAccepted union all select accepter_id as id from RequestAccepted) select top 1 id, count(*) as num from cte group by id order by num desc"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

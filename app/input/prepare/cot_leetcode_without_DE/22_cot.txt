@@ -1,0 +1,30 @@
+---
+Example of question twenty-two
+---
+
+CREATE TABLE Activity (
+    user_id INT,
+    session_id INT,
+    activity_date DATE,
+    activity_type VARCHAR(20) CONSTRAINT CHK_Activity_activity_type CHECK (activity_type IN ('open_session', 'end_session', 'scroll_down', 'send_message'))
+)
+
+
+Write a solution to find the daily active user count for a period of 30 days ending 2019-07-27 inclusively. A user was active on someday if they made at least one activity on that day.
+
+Return the result table in any order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Calculate the number of active users per day for the 30 days ending July 27, 2019. Use WHERE to filter activity records for the specified date range, and use COUNT(DISTINCT user_id) to count the number of unique active users per day. Calculate the number of daily active users grouped by GROUP BY activity_date and use the DATEADD function to calculate the starting date.",
+  "sql": "SELECT activity_date as day , COUNT(DISTINCT user_id ) as active_users FROM Activity WHERE activity_date <='2019-07-27' AND activity_date > DATEADD(day, -30, '2019-07-27') GROUP BY activity_date;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

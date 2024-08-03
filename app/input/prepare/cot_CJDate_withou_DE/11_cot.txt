@@ -1,0 +1,39 @@
+---
+Example of question eleven
+---
+
+CREATE TABLE Suppliers (
+    sno VARCHAR(255),
+    sname VARCHAR(255),
+    status INT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Parts (
+    pno VARCHAR(255),
+    pname VARCHAR(255),
+    color VARCHAR(255),
+    weight FLOAT,
+    city VARCHAR(255)
+)
+
+CREATE TABLE Shipments (
+    sno VARCHAR(255),
+    pno VARCHAR(255),
+    qty INT
+)
+
+
+Question : Get supplier names for suppliers who supply at least all those parts supplied by supplier S2.
+
+---
+output
+---
+{
+  "reasoning_process" : "Use the two-level NOT EXISTS subquery to realize that the parts supplied by the supplier include at least all parts supplied by supplier S2. The first level NOT EXISTS subquery filters out those parts supplied by S2 and checks whether there are any cases that are not supplied by the target supplier SX. The second level NOT EXISTS subquery checks each part supplied by S2 to confirm whether each part supplied by S2 is also supplied by SX.",
+  "sql": "SELECT SX.sname FROM Suppliers SX WHERE NOT EXISTS ( SELECT SPX.* FROM Shipments SPX WHERE SPX.sno = 'S2' AND NOT EXISTS ( SELECT SPY.* FROM Shipments SPY WHERE SPY.sno = SX.sno AND SPY.pno = SPX.pno) )"
+}
+
+---
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+---

@@ -1,0 +1,30 @@
+---
+Example of question twenty
+---
+
+CREATE TABLE Activities (
+    sell_date DATE,
+    product VARCHAR(20)
+)
+
+
+Write a solution to find for each date the number of different products sold and their names.
+
+The sold products names for each date should be sorted lexicographically.
+
+Return the result table ordered by sell_date.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Find the number of different products sold each day and their names and sort the product names sold each day in lexicographic order and the resulting table is sorted by sell_date. Use SELECT DISTINCT to select unique sales records from the Activities table to avoid double counting sales of the same product within the same day. Use the STRING_AGG function to aggregate product names and use WITHIN GROUP (ORDER BY product) to ensure that the product names are sorted lexicographically. Use COUNT(DISTINCT product) to count the number of different products sold each day. Finally, use GROUP BY sell_date to group and sort.",
+  "sql": "SELECT sell_date ,COUNT( DISTINCT (product) ) AS num_sold, STRING_AGG( product,',') WITHIN GROUP (ORDER BY product DESC) AS products FROM (SELECT DISTINCT * FROM Activities) A GROUP BY sell_date ORDER BY sell_date"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

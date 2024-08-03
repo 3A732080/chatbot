@@ -1,0 +1,33 @@
+---
+Example of the sixth question
+---
+
+CREATE TABLE Employees (
+    id INT,
+    name VARCHAR(20)
+)
+
+CREATE TABLE EmployeeUNI (
+    id INT,
+    unique_id INT
+)
+
+
+Write a solution to show the unique ID of each user, If a user does not have a unique ID replace just show null.
+
+Return the result table in any order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "In order to display the unique ID of each user, if the user does not have a unique ID, null will be displayed, so use LEFT JOIN to join the Employees table and the EmployeeUNI table, and specify the join condition through E.id = EU.id to ensure that the The employee's ID corresponds to the unique ID. Finally, select unique_id from the EmployeeUNI table and name from the Employees table in the SELECT clause to display the unique ID and name of each consumer.",
+  "sql": "select EU.unique_id , E.name from Employees E left join EmployeeUNI EU on E.id = EU.id;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

@@ -1,0 +1,858 @@
+VES (有效SQL的執行時間): √E(參考答案的預測時間) /E(模型預測時間)
+
+----- Leetcode 參考答案的執行時間 (ms) ----- 
+
+1.  2263
+2.  6590
+3.  3510
+4.  3783
+5.  2096
+6.  2240
+7.  5667
+8.  3770
+9.  6164
+
+----- ----- ----- ----- -----  Leetcode : ours ----- ----- ----- ----- ----- ----- 
+
+(Zero-shot)
+VA = 0.8888888888888888
+    - 有效次數：8
+    - 執行總次數：9
+
+VES = 0.8016
+
+    ----------------------------------------------------------------------
+
+    1. SELECT class FROM Courses GROUP BY class HAVING COUNT(student) >= 5
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2447
+
+    ----------------------------------------------------------------------
+
+    2. SELECT * FROM Cinema WHERE id % 2 = 1 AND description != 'boring' ORDER BY rating DESC;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 7204
+
+    ----------------------------------------------------------------------
+
+    3. SELECT name FROM Customer WHERE referee_id <> 2 OR referee_id IS NULL;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 3977
+
+    ----------------------------------------------------------------------
+
+    4. SELECT e1.employee_id FROM Employees e1 LEFT JOIN Employees e2 ON e1.manager_id = e2.employee_id WHERE e1.salary < 30000 AND e2.employee_id IS NULL ORDER BY e1.employee_id
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 4108
+    ----------------------------------------------------------------------
+
+    5. SELECT e1.name AS Employee FROM Employee e1 JOIN Employee e2 ON e1.managerId = e2.id WHERE e1.salary > e2.salary;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2297
+    ----------------------------------------------------------------------
+
+    6. SELECT m.name FROM Employee e JOIN Employee m ON e.managerId = m.id GROUP BY m.id, m.name HAVING COUNT(e.id) >= 5;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2370
+    ----------------------------------------------------------------------
+
+    7. SELECT CASE WHEN RN % 2 = 1 AND RN < (SELECT COUNT(*) FROM Seat) THEN RN + 1 ELSE RN END AS id, CASE WHEN RN % 2 = 1 AND RN < (SELECT COUNT(*) FROM Seat) THEN next.student ELSE s.student END AS student FROM (SELECT id, student, ROW_NUMBER() OVER (ORDER BY id) AS RN FROM Seat) s LEFT JOIN (SELECT id, student, ROW_NUMBER() OVER (ORDER BY id) AS RN FROM Seat) next ON s.RN + 1 = next.RN ORDER BY s.id
+
+    VA  (SQL 是否有效：0/1): 0
+    E (執行 100 次之後，執行時間 (ms))：0
+    ----------------------------------------------------------------------
+
+    8. SELECT u.name AS results FROM Users u JOIN MovieRating mr ON u.user_id = mr.user_id GROUP BY u.name ORDER BY COUNT(*) DESC, u.name OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY;  SELECT m.title AS results FROM Movies m JOIN MovieRating mr ON m.movie_id = mr.movie_id WHERE MONTH(mr.created_at) = 2 AND YEAR(mr.created_at) = 2020 GROUP BY m.title ORDER BY AVG(mr.rating) DESC, m.title OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 12300
+    ----------------------------------------------------------------------
+
+    9. SELECT username, activity, startDate, endDate FROM ( SELECT username, activity, startDate, endDate, ROW_NUMBER() OVER (PARTITION BY username ORDER BY endDate DESC) AS rn FROM UserActivity ) ranked WHERE rn = 2 OR rn = 1;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 7348
+    ----------------------------------------------------------------------
+
+
+
+(Few-shot)
+VA = 1.0
+    - 有效次數：9
+    - 執行總次數：9
+
+VES = 0.9263
+
+    ----------------------------------------------------------------------
+
+    1. SELECT class FROM Courses GROUP BY class HAVING COUNT(student) >= 5;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2373
+
+    ----------------------------------------------------------------------
+
+    2. SELECT id, movie, description, rating FROM Cinema WHERE id % 2 = 1 AND description != 'boring' ORDER BY rating DESC;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 7435
+
+    ----------------------------------------------------------------------
+
+    3. SELECT name FROM Customer WHERE referee_id <> 2 OR referee_id IS NULL;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 3936
+
+    ----------------------------------------------------------------------
+
+    4. SELECT employee_id FROM Employees WHERE salary < 30000 AND manager_id IS NULL OR manager_id NOT IN (SELECT employee_id FROM Employees) ORDER BY employee_id;
+    
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 4120
+    ----------------------------------------------------------------------
+
+    5. SELECT e1.name AS Employee FROM Employee e1 JOIN Employee e2 ON e1.managerId = e2.id WHERE e1.salary > e2.salary;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2290
+    ----------------------------------------------------------------------
+
+    6. SELECT e1.name FROM Employee e1 JOIN Employee e2 ON e1.id = e2.managerId GROUP BY e1.name HAVING COUNT(e2.id) >= 5;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2497
+    ----------------------------------------------------------------------
+
+    7. WITH CTE AS (SELECT *, ROW_NUMBER() OVER (ORDER BY id) AS rn FROM Seat) UPDATE CTE SET id = CASE WHEN rn % 2 = 0 THEN rn - 1 ELSE rn + 1 END WHERE rn % 2 = 0; SELECT id, student FROM Seat ORDER BY id;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 7626
+    ----------------------------------------------------------------------
+
+    8. WITH UserMovieRatings AS (SELECT user_id, COUNT(movie_id) AS rating_count FROM MovieRating GROUP BY user_id), MaxRatingCounts AS (SELECT TOP 1 WITH TIES user_id FROM UserMovieRatings ORDER BY rating_count DESC, user_id), AvgMovieRatings AS (SELECT movie_id, AVG(1.0 * rating) AS average_rating FROM MovieRating WHERE YEAR(created_at) = 2020 AND MONTH(created_at) = 2 GROUP BY movie_id), MaxAvgRating AS (SELECT TOP 1 WITH TIES movie_id FROM AvgMovieRatings ORDER BY average_rating DESC, movie_id) SELECT (SELECT name FROM Users WHERE user_id = (SELECT TOP 1 user_id FROM MaxRatingCounts ORDER BY user_id)) AS user_name, (SELECT title FROM Movies WHERE movie_id = (SELECT TOP 1 movie_id FROM MaxAvgRating ORDER BY movie_id)) AS movie_name
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 5470
+    ----------------------------------------------------------------------
+
+    9. WITH RankedActivity AS ( SELECT *, ROW_NUMBER() OVER (PARTITION BY username ORDER BY startDate DESC) AS rn FROM UserActivity ) SELECT username, activity, startDate, endDate FROM RankedActivity WHERE rn = 2 OR (rn = 1 AND NOT EXISTS (SELECT 1 FROM RankedActivity ra2 WHERE ra2.username = RankedActivity.username AND ra2.rn = 2));
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 7280
+    ----------------------------------------------------------------------
+
+
+
+(FT)
+VA = 0.8888888888888888
+    - 有效次數：8
+    - 執行總次數：9
+
+VES = 0.8228
+
+    ----------------------------------------------------------------------
+
+    1. SELECT class FROM (SELECT class, COUNT(DISTINCT student) as cnt FROM Courses GROUP BY class) tmp WHERE cnt >= 5
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2533
+
+    ----------------------------------------------------------------------
+
+    2. select * from cinema where Id % 2 = 1 and description != 'boring' order by rating desc;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 7505
+
+    ----------------------------------------------------------------------
+
+    3. select name from customer where referee_id != 2 or referee_id is null;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 3953
+
+    ----------------------------------------------------------------------
+
+    4. SELECT employee_id FROM Employees WHERE salary < 30000 AND manager_id NOT IN (SELECT employee_id FROM Employees) ORDER BY employee_id;
+    
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 4213
+    ----------------------------------------------------------------------
+
+    5. select e1.name Employee from Employee e1, Employee e2 where e1.managerId = e2.id AND e1.salary > e2.salary
+
+    VA  (SQL 是否有效：0/1): 
+    E (執行 100 次之後，執行時間 (ms)): 2424
+    ----------------------------------------------------------------------
+
+    6. SELECT E2.name FROM Employee E1, Employee E2 WHERE E1.managerId = E2.id GROUP BY E2.name HAVING COUNT(E1.id) >= 5;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2423
+    ----------------------------------------------------------------------
+
+    7. select case when id % 2 = 1 and id != (select max(id) from seat) then id + 1 else case when id % 2 = 0 then id - 1 else id end end as id, student from seat order by id;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 8703
+    ----------------------------------------------------------------------
+
+    8. Expecting value: line 1 column 1 (char 0)  >>> change
+        
+        WITH cte1 AS (SELECT user_id, name, ROW_NUMBER() OVER(ORDER BY rating_count DESC, name) AS rn FROM (SELECT MR.user_id, U.name, COUNT(1) AS rating_count FROM MovieRating MR JOIN Users U ON MR.user_id = U.user_id GROUP BY MR.user_id, U.name) T1), cte2 AS (SELECT title, AVG(cast(rating as float)) as avg_rating, ROW_NUMBER() OVER(ORDER BY AVG(cast(rating as float)) desc, title) as rk FROM MovieRating MR JOIN Movies M ON MR.movie_id = M.movie_id WHERE created_at >= '2020-02-01' AND created_at < '2020-03-01' GROUP BY title) SELECT TOP 1 reason.name FROM (select name, rank() over(order by rating_count desc) rnk from cte1 where rn = 1) reason JOIN (select title, rank() over (order by avg_rating desc) rnk from cte2 where rk = 1) top_rating ON reason.rnk = top_rating.rnk;
+
+
+    VA  (SQL 是否有效：0/1): 0
+    E (執行 100 次之後，執行時間 (ms))：0
+    ----------------------------------------------------------------------
+
+    9. with cte as (select *, dense_rank() over(partition by username order by StartDate desc) as r, count(*) over(partition by username) as c from UserActivity) select username, activity, startDate, endDate from cte where r = 2 or c = 1;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 7050
+    ----------------------------------------------------------------------
+
+
+
+
+----- ----- ----- ----- -----  Leetcode : Compared ----- ----- ----- ----- ----- ----- 
+(Zero-shot)
+VA = 1.0
+    - 有效次數：9
+    - 執行總次數：9
+
+VES = 0.9126
+
+    ----------------------------------------------------------------------
+
+    1. SELECT class FROM Courses GROUP BY class HAVING COUNT(DISTINCT student) >= 5
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2577
+
+    ----------------------------------------------------------------------
+
+    2. SELECT * FROM cinema WHERE id % 2 = 1 AND description <> 'boring' ORDER BY rating DESC;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 7527
+
+    ----------------------------------------------------------------------
+
+    3. SELECT c.name FROM Customer c WHERE c.referee_id IS NULL OR c.referee_id <> 2;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 4010
+
+    ----------------------------------------------------------------------
+
+    4. SELECT employee_id FROM Employees WHERE salary < 30000 AND manager_id NOT IN (SELECT DISTINCT manager_id FROM Employees WHERE manager_id IS NOT NULL)
+    
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2337
+    ----------------------------------------------------------------------
+
+    5. SELECT e.name AS Employee FROM Employee e INNER JOIN Employee m ON e.managerId = m.id WHERE e.salary > m.salary
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2343
+    ----------------------------------------------------------------------
+
+    6. SELECT e2.name AS 'Manager Name' FROM Employee e1 JOIN Employee e2 ON e1.managerId = e2.id GROUP BY e2.id, e2.name HAVING COUNT(e1.id) >= 5
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 4060
+    ----------------------------------------------------------------------
+
+    7. WITH CTE AS (SELECT id, student, ROW_NUMBER() OVER (ORDER BY id) AS rn FROM Seat) SELECT CASE WHEN rn % 2 = 0 THEN lag(id) OVER (ORDER BY rn) WHEN rn % 2 != 0 AND rn != (SELECT COUNT(*) FROM Seat) THEN lead(id) OVER (ORDER BY rn) ELSE id END AS id, student FROM CTE ORDER BY id
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 6543
+    ----------------------------------------------------------------------
+
+    8. SELECT TOP 1 name FROM Users JOIN MovieRating ON Users.user_id = MovieRating.user_id GROUP BY name ORDER BY COUNT(DISTINCT movie_id) DESC, name ASC; SELECT TOP 1 title FROM Movies JOIN MovieRating ON Movies.movie_id = MovieRating.movie_id WHERE MONTH(created_at) = 2 AND YEAR(created_at) = 2020 GROUP BY title ORDER BY AVG(rating) DESC, title ASC;
+
+    VA  (SQL 是否有效：0/1): 1
+    VA  (SQL 是否有效：0/1): 13970
+    ----------------------------------------------------------------------
+
+
+    9. WITH RankedActivities AS ( SELECT *, ROW_NUMBER() OVER (PARTITION BY username ORDER BY endDate DESC) AS rn FROM UserActivity ) SELECT username, activity FROM ( SELECT *, LAG(rn) OVER (PARTITION BY username ORDER BY endDate DESC) AS prevRank FROM RankedActivities ) AS RankedUserActivities WHERE rn = 2 OR (rn = 1 AND prevRank IS NULL)
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 6240
+    ----------------------------------------------------------------------
+
+
+
+(Few-shot)
+VA = 0.7777777777777778
+    - 有效次數：9
+    - 執行總次數：12
+
+VES = 0.7514
+
+    ----------------------------------------------------------------------
+
+    1. SELECT class FROM Courses GROUP BY class HAVING COUNT(student) >= 5;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2593
+
+    ----------------------------------------------------------------------
+
+    2. SELECT * FROM cinema WHERE id % 2 = 1 AND description <> 'boring' ORDER BY rating DESC;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 7580
+
+    ----------------------------------------------------------------------
+
+    3. SELECT name FROM Customer WHERE referee_id IS NULL OR referee_id <> 2;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 4013
+
+    ----------------------------------------------------------------------
+
+    4. SELECT employee_id FROM Employees e1 WHERE salary < 30000 AND NOT EXISTS (SELECT 1 FROM Employees e2 WHERE e2.employee_id = e1.manager_id);
+    
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2416
+    ----------------------------------------------------------------------
+
+    5. SELECT e.name as Employee FROM Employee e JOIN Employee m ON e.managerId = m.id WHERE e.salary > m.salary;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2410
+    ----------------------------------------------------------------------
+
+    6. SELECT managerId FROM Employee WHERE managerId IS NOT NULL GROUP BY managerId HAVING COUNT(id) >= 5;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2490
+    ----------------------------------------------------------------------
+
+    7. WITH CTE AS ( SELECT s1.id, s1.student, s2.student AS next_student, s2.id AS next_id FROM Seat s1 JOIN Seat s2 ON s1.id + 1 = s2.id ) UPDATE Seat SET id = CASE WHEN id IN ( SELECT id FROM CTE) THEN ( SELECT next_id FROM CTE WHERE id = Seat.id) ELSE id END WHERE EXISTS ( SELECT 1 FROM CTE WHERE id = Seat.id); SELECT * FROM Seat ORDER BY id ASC;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 8250
+    ----------------------------------------------------------------------
+
+    8. SELECT name FROM Users WHERE user_id IN (SELECT user_id FROM MovieRating GROUP BY user_id HAVING COUNT(*) = (SELECT TOP 1 COUNT(*) FROM MovieRating GROUP BY user_id ORDER BY COUNT(*) DESC, name) ORDER BY name); SELECT TOP 1 m.title FROM Movies m JOIN MovieRating mr ON m.movie_id = mr.movie_id WHERE mr.created_at >= '2020-02-01' AND mr.created_at <= '2020-02-29' GROUP BY m.title HAVING AVG(CAST(mr.rating AS FLOAT)) = (SELECT TOP 1 AVG(CAST(rating AS FLOAT)) FROM MovieRating WHERE created_at >= '2020-02-01' AND created_at <= '2020-02-29' GROUP BY movie_id ORDER BY AVG(CAST(rating AS FLOAT)) DESC, title) ORDER BY m.title;
+
+    VA  (SQL 是否有效：0/1): 0
+    E (執行 100 次之後，執行時間 (ms))：0
+    ----------------------------------------------------------------------
+
+
+    9. SELECT username, activity, startDate, endDate FROM (SELECT username, activity, startDate, endDate, ROW_NUMBER() OVER (PARTITION BY username ORDER BY startDate DESC) AS rn FROM UserActivity) AS temp WHERE rn <= 2 GROUP BY username, activity, startDate, endDate HAVING COUNT(*) = 1 OR rn = 2;
+
+    VA  (SQL 是否有效：0/1): 0
+    E (執行 100 次之後，執行時間 (ms))：0
+    ----------------------------------------------------------------------
+
+
+
+(FT)
+VA = 0.7777777777777778
+    - 有效次數：7
+    - 執行總次數：9
+
+VES = 0.899
+
+    ----------------------------------------------------------------------
+
+    1. SELECT class FROM Courses GROUP BY class HAVING COUNT(student) >= 5
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2567
+
+    ----------------------------------------------------------------------
+
+    2. SELECT * FROM cinema WHERE id % 2 != 0 AND description <> 'boring' ORDER BY rating DESC;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms))：5063
+
+    ----------------------------------------------------------------------
+
+    3. SELECT c1.name FROM Customer c1 LEFT JOIN Customer c2 ON c1.referee_id = c2.id WHERE c2.id <> 2 OR c2.id IS NULL;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 4070
+
+    ----------------------------------------------------------------------
+
+    4. SELECT employee_id FROM Employees WHERE salary < 30000 AND manager_id NOT IN (SELECT employee_id FROM Employees)
+    
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2400
+    ----------------------------------------------------------------------
+
+    5. SELECT e.name AS Employee FROM Employee e INNER JOIN Employee m ON e.managerId = m.id WHERE e.salary > m.salary
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2423
+    ----------------------------------------------------------------------
+
+    6. SELECT e1.name as 'manager' FROM Employee e1 JOIN (SELECT managerId, COUNT(*) as numReports FROM Employee GROUP BY managerId) e2 ON e1.id = e2.managerId WHERE e2.numReports >= 5
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2370
+    ----------------------------------------------------------------------
+
+    7. WITH NumberedStudents AS (SELECT ROW_NUMBER() OVER (ORDER BY id) AS RowNum, id, student FROM Seat) SELECT CASE WHEN RowNum % 2 = 0 THEN lag(id) OVER (ORDER BY RowNum) WHEN RowNum % 2 <> 0 AND RowNum = (SELECT COUNT(*) FROM Seat) THEN id ELSE lead(id) OVER (ORDER BY RowNum) END AS id, student FROM NumberedStudents ORDER BY id
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 6290
+    ----------------------------------------------------------------------
+
+    8. SELECT TOP 1 u.name FROM Users u JOIN (SELECT user_id, COUNT(*) AS num_ratings FROM MovieRating GROUP BY user_id ORDER BY num_ratings DESC, user_id) m ON u.user_id = m.user_id; SELECT TOP 1 m.title FROM Movies m JOIN (SELECT movie_id, AVG(CAST(rating AS FLOAT)) AS avg_rating FROM MovieRating WHERE YEAR(created_at) = 2020 AND MONTH(created_at) = 2 GROUP BY movie_id ORDER BY avg_rating DESC, title) r ON m.movie_id = r.movie_id;
+
+    VA  (SQL 是否有效：0/1): 0
+    E (執行 100 次之後，執行時間 (ms))：0 
+    ----------------------------------------------------------------------
+
+
+    9. Please provide the revised SQL query once you are ready to receive it.
+
+    VA  (SQL 是否有效：0/1): 0
+    E (執行 100 次之後，執行時間 (ms))：0
+    ----------------------------------------------------------------------
+
+
+
+----- CJDate 參考答案的執行時間 (ms) ----- 
+
+1.  6256
+2.  6297
+3.  2103
+4.  2150
+5.  2083
+6.  3483
+7.  3177
+8.  2063
+9.  5757
+
+----- ----- ----- ----- -----  CJDate : ours ----- ----- ----- ----- ----- ----- 
+(Zero-shot)
+VA = 1.0
+    - 有效次數: 9
+    - 執行總次數: 9
+
+VES = 0.9852
+
+    ----------------------------------------------------------------------
+
+    1. SELECT Parts.pno, Suppliers.city FROM Parts JOIN Shipments ON Parts.pno = Shipments.pno JOIN Suppliers ON Shipments.sno = Suppliers.sno
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 7436
+
+    ----------------------------------------------------------------------
+
+    2. SELECT * FROM Parts WHERE pname LIKE 'C%'
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 7370
+
+    ----------------------------------------------------------------------
+
+    3. SELECT DISTINCT Parts.pno FROM Parts JOIN Shipments ON Parts.pno = Shipments.pno WHERE Parts.weight > 18 OR Shipments.sno = 'S2';
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2500
+
+    ----------------------------------------------------------------------
+
+    4. SELECT Suppliers.sname FROM Suppliers LEFT JOIN Shipments ON Suppliers.sno = Shipments.sno AND Shipments.pno = 'P2' WHERE Shipments.sno IS NULL
+    
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2457
+    ----------------------------------------------------------------------
+
+    5. SELECT s.sname FROM Suppliers s JOIN Shipments sh ON s.sno = sh.sno JOIN Parts p ON sh.pno = p.pno GROUP BY s.sname HAVING COUNT(DISTINCT p.pno) = (SELECT COUNT(DISTINCT pno) FROM Parts)
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2480
+    ----------------------------------------------------------------------
+
+    6. SELECT DISTINCT s.sname AS sname FROM Suppliers s JOIN Shipments ss ON s.sno = ss.sno JOIN Parts p ON ss.pno = p.pno WHERE p.color = 'Red';
+
+    VA  (SQL 是否有效: 0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 4140
+    ----------------------------------------------------------------------
+
+    7. SELECT DISTINCT s.sname FROM Suppliers s JOIN Shipments sh ON s.sno = sh.sno JOIN Parts p ON sh.pno = p.pno WHERE p.pname = 'P2';
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2547
+    ----------------------------------------------------------------------
+
+    8. SELECT sno FROM Suppliers WHERE status < (SELECT MAX(status) FROM Suppliers)
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2450
+    ----------------------------------------------------------------------
+
+
+    9. SELECT s.pno, SUM(qty) AS totqty FROM Parts p JOIN Shipments s ON p.pno = s.pno GROUP BY s.pno;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 6763
+    ----------------------------------------------------------------------
+
+
+
+(Few-shot)
+VA = 1.0
+    - 有效次數: 9
+    - 執行總次數: 9
+
+VES = 0.9328
+
+    ----------------------------------------------------------------------
+
+    1. SELECT p.pno, STRING_AGG(p.city, ',') AS city FROM Parts p INNER JOIN Shipments s ON p.pno = s.pno GROUP BY p.pno
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 7196
+
+    ----------------------------------------------------------------------
+
+    2. SELECT * FROM Parts WHERE pname LIKE 'C%'
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 7100
+
+    ----------------------------------------------------------------------
+
+    3. SELECT pno FROM Parts WHERE weight > 18 OR pno IN (SELECT pno FROM Shipments WHERE sno = 'S2')
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2450
+
+    ----------------------------------------------------------------------
+
+    4. SELECT sname FROM Suppliers WHERE sno NOT IN (SELECT sno FROM Shipments WHERE pno = 'P2')
+    
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2533
+    ----------------------------------------------------------------------
+
+    5. SELECT sname FROM Suppliers s WHERE (SELECT COUNT(DISTINCT pno) FROM Parts) = (SELECT COUNT(DISTINCT pno) FROM Shipments WHERE Shipments.sno = s.sno)
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2470
+    ----------------------------------------------------------------------
+
+    6. SELECT DISTINCT s.sname FROM Suppliers s JOIN Shipments sh ON s.sno = sh.sno JOIN Parts p ON sh.pno = p.pno WHERE p.color = 'Red'
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 3950
+    ----------------------------------------------------------------------
+
+    7. SELECT sname FROM Suppliers WHERE sno IN (SELECT sno FROM Shipments WHERE pno = 'P2')
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 3543
+    ----------------------------------------------------------------------
+
+    8. SELECT sno FROM Suppliers WHERE status < (SELECT MAX(status) FROM Suppliers)
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2415
+    ----------------------------------------------------------------------
+
+    9. SELECT Shipments.pno, SUM(Shipments.qty) AS totqty FROM Shipments GROUP BY Shipments.pno;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 6763
+    ----------------------------------------------------------------------
+
+
+
+(FT)
+VA = 1.0
+    - 有效次數: 9
+    - 執行總次數: 9
+
+VES = 0.9171
+
+    ----------------------------------------------------------------------
+
+    1. SELECT DISTINCT Shipments.pno, Suppliers.city FROM Shipments JOIN Suppliers ON Shipments.sno = Suppliers.sno
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 7236
+
+    ----------------------------------------------------------------------
+
+    2. SELECT * FROM Parts WHERE pname LIKE 'C%'
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 7267
+
+    ----------------------------------------------------------------------
+
+    3. SELECT DISTINCT s.pno FROM Shipments s, Parts p WHERE s.pno = p.pno AND (p.weight > 18 OR s.sno = 'S2')
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2500
+
+    ----------------------------------------------------------------------
+
+    4. SELECT sname FROM Suppliers WHERE NOT EXISTS (SELECT * FROM Shipments WHERE Shipments.sno = Suppliers.sno AND Shipments.pno = 'P2')
+    
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2543
+    ----------------------------------------------------------------------
+
+    5. select distinct Suppliers.sname from Suppliers where not exists ( select * from Parts where not exists ( select * from Shipments where Shipments.sno = Suppliers.sno and Shipments.pno = Parts.pno ) ) ;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2530
+    ----------------------------------------------------------------------
+
+    6. SELECT DISTINCT s.sname FROM Suppliers s INNER JOIN Shipments sh ON s.sno = sh.sno INNER JOIN Parts p ON sh.pno = p.pno WHERE p.color = 'Red'
+
+    VA  (SQL 是否有效: 0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 4157
+    ----------------------------------------------------------------------
+
+    7. SELECT DISTINCT s.sname FROM Suppliers s INNER JOIN Shipments sh ON s.sno = sh.sno WHERE sh.pno = 'P2'
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 3957
+    ----------------------------------------------------------------------
+
+    8. SELECT sno FROM Suppliers WHERE status < (SELECT MAX(status) FROM Suppliers)
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2464
+    ----------------------------------------------------------------------
+
+    9. SELECT pno, SUM(qty) as totqty FROM Shipments GROUP BY pno
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 6754
+    ----------------------------------------------------------------------
+
+
+
+
+
+----- ----- ----- ----- -----  CJDate : Compared ----- ----- ----- ----- ----- ----- 
+(Zero-shot)
+VA = 1.0
+    - 有效次數: 9
+    - 執行總次數: 9
+
+VES = 0.9135
+
+    ----------------------------------------------------------------------
+
+    1. SELECT p.pno, p.pname, STRING_AGG(s.city, ', ') AS supplier_cities FROM Parts p JOIN Shipments sh ON p.pno = sh.pno JOIN Suppliers s ON sh.sno = s.sno GROUP BY p.pno, p.pname
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 8377
+
+    ----------------------------------------------------------------------
+
+    2. SELECT * FROM Parts WHERE pname LIKE 'C%'
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 7213
+
+    ----------------------------------------------------------------------
+
+    3. SELECT pno FROM Parts WHERE weight > 18 OR pno IN (SELECT pno FROM Shipments WHERE sno = 'S2')
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2470
+
+    ----------------------------------------------------------------------
+
+    4. SELECT sname FROM Suppliers WHERE sno NOT IN (SELECT sno FROM Shipments WHERE pno = 'P2')
+    
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2490
+    ----------------------------------------------------------------------
+
+    5. SELECT s.sname FROM Suppliers s WHERE NOT EXISTS ( SELECT p.pno FROM Parts p WHERE NOT EXISTS ( SELECT * FROM Shipments sh WHERE sh.sno = s.sno AND sh.pno = p.pno ) )
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2537
+    ----------------------------------------------------------------------
+
+    6. SELECT DISTINCT s.sname FROM Suppliers s INNER JOIN Shipments sh ON s.sno = sh.sno INNER JOIN Parts p ON sh.pno = p.pno WHERE p.color = 'red'
+
+    VA  (SQL 是否有效: 0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 4190
+    ----------------------------------------------------------------------
+
+    7. SELECT sname FROM Suppliers WHERE sno IN (SELECT sno FROM Shipments WHERE pno = 'P2')
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 3803
+    ----------------------------------------------------------------------
+
+    8. SELECT sno FROM Suppliers WHERE status < (SELECT MAX(status) FROM Suppliers)
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2440
+    ----------------------------------------------------------------------
+
+    9. SELECT S.pno, SUM(S.qty) as total_shipment_quantity FROM Shipments S JOIN Parts P ON S.pno = P.pno GROUP BY S.pno
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 6803
+    ----------------------------------------------------------------------
+
+
+
+(Few-shot)
+VA = 0.8888888888888888
+    - 有效次數: 8
+    - 執行總次數: 9
+
+VES = 0.8205
+
+    ----------------------------------------------------------------------
+
+    1. SELECT P.pno, STUFF((SELECT DISTINCT ', ' + S.city FROM Shipments S WHERE S.pno = P.pno FOR XML PATH('')), 1, 2, '') AS cities_supplied FROM Parts P
+
+    VA  (SQL 是否有效：0/1): 0
+    E (執行 100 次之後，執行時間 (ms)): 0
+
+    ----------------------------------------------------------------------
+
+    2. SELECT * FROM Parts WHERE pname LIKE 'C%'
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 7380
+
+    ----------------------------------------------------------------------
+
+    3. SELECT pno FROM Parts WHERE weight > 18 OR pno IN (SELECT pno FROM Shipments WHERE sno = 'S2')
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2436
+
+    ----------------------------------------------------------------------
+
+    4. SELECT s.sname FROM Suppliers s WHERE s.sno NOT IN (SELECT sno FROM Shipments WHERE pno = 'P2')
+    
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2506
+    ----------------------------------------------------------------------
+
+    5. SELECT S.sname FROM Suppliers S WHERE NOT EXISTS (SELECT DISTINCT P.pno FROM Parts P WHERE NOT EXISTS (SELECT * FROM Shipments SH WHERE SH.sno = S.sno AND SH.pno = P.pno))
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2494
+    ----------------------------------------------------------------------
+
+    6. SELECT DISTINCT S.sname FROM Suppliers S INNER JOIN Shipments SH ON S.sno = SH.sno INNER JOIN Parts P ON SH.pno = P.pno WHERE P.color = 'Red'
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 4203
+    ----------------------------------------------------------------------
+
+    7. SELECT s.sname FROM Suppliers s INNER JOIN Shipments sh ON s.sno = sh.sno WHERE sh.pno = 'P2'
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 3920
+    ----------------------------------------------------------------------
+
+    8. SELECT sno FROM Suppliers WHERE status < (SELECT MAX(status) FROM Suppliers)
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2463
+    ----------------------------------------------------------------------
+
+    9. SELECT Shipments.pno, SUM(qty) AS total_quantity FROM Shipments GROUP BY Shipments.pno;
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 6176
+    ----------------------------------------------------------------------
+
+
+
+(FT)
+VA = 1.0
+    - 有效次數: 9
+    - 執行總次數: 9
+
+VES = 0.9084
+
+    ----------------------------------------------------------------------
+
+    1. SELECT Parts.pno, Parts.pname, STRING_AGG(Parts.city, ',') AS supplying_cities FROM Parts INNER JOIN Shipments ON Parts.pno = Shipments.pno GROUP BY Parts.pno, Parts.pname
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 8006
+
+    ----------------------------------------------------------------------
+
+    2. SELECT * FROM Parts WHERE pname LIKE 'C%'
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 7584
+
+    ----------------------------------------------------------------------
+
+    3. SELECT DISTINCT Parts.pno FROM Parts INNER JOIN Shipments ON Parts.pno = Shipments.pno WHERE Parts.weight > 18 OR Shipments.sno = 'S2'
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2497
+
+    ----------------------------------------------------------------------
+
+    4. SELECT sname FROM Suppliers WHERE sno NOT IN (SELECT sno FROM Shipments WHERE pno = 'P2')
+    
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2550
+    ----------------------------------------------------------------------
+
+    5. SELECT s.sname FROM Suppliers s JOIN Shipments sh ON s.sno = sh.sno GROUP BY s.sname HAVING COUNT(DISTINCT sh.pno) = (SELECT COUNT(DISTINCT pno) FROM Parts)
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2553
+    ----------------------------------------------------------------------
+
+    6. SELECT DISTINCT s.sname FROM Suppliers s INNER JOIN Shipments sh ON s.sno = sh.sno INNER JOIN Parts p ON sh.pno = p.pno WHERE p.color = 'red'
+
+    VA  (SQL 是否有效: 0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 4213
+    ----------------------------------------------------------------------
+
+    7. SELECT DISTINCT s.sname FROM Suppliers s JOIN Shipments sh ON s.sno = sh.sno WHERE sh.pno = 'P2'
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 3913
+    ----------------------------------------------------------------------
+
+    8. SELECT sno FROM Suppliers WHERE status < (SELECT MAX(status) FROM Suppliers)
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 2473
+    ----------------------------------------------------------------------
+
+    9. SELECT Shipments.pno, SUM(Shipments.qty) AS total_shipment_quantity FROM Shipments INNER JOIN Parts ON Shipments.pno = Parts.pno GROUP BY Shipments.pno
+
+    VA  (SQL 是否有效：0/1): 1
+    E (執行 100 次之後，執行時間 (ms)): 6837
+    ----------------------------------------------------------------------
+
+
+
+

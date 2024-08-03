@@ -1,0 +1,34 @@
+---
+Example of question thirteen
+---
+
+CREATE TABLE Project (
+    project_id INT,
+    employee_id INT
+)
+
+CREATE TABLE Employee (
+    employee_id INT,
+    name VARCHAR(10),
+    experience_years INT
+)
+
+
+Write an SQL query that reports the average experience years of all the employees for each project, rounded to 2 digits.
+
+Return the result table in any order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Calculate the average number of years of experience for all employees on each project and round the average to two decimal places. By inner joining the project table and employee table, calculate the average working years of each project by grouping by project ID.",
+  "sql": "Select project_id, round(avg(experience_years*1.0),2) average_years from project p inner join employee e on p.employee_id = e.employee_id group by project_id;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

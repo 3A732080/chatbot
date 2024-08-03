@@ -1,0 +1,32 @@
+---
+Example of question eighteen
+---
+
+CREATE TABLE Employees (
+    employee_id INT,
+    name VARCHAR(20),
+    reports_to INT NULL,
+    age INT
+)
+
+
+For this problem, we will consider a manager an employee who has at least 1 other employee reporting to them.
+
+Write a solution to report the ids and the names of all managers, the number of employees who report directly to them, and the average age of the reports rounded to the nearest integer.
+
+Return the result table ordered by employee_id.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Reports the IDs and names of all managers, the number of employees who report directly to them, and the average age of those direct reports (rounded to the nearest whole number). Use an inner join to self-relate the Employees table to identify managers and their direct reporting employees, calculate the number and average age of direct reporting employees, and round the average age to the nearest integer. The results are sorted by employee_id in ascending order.",
+  "sql": "select e1.employee_id, e1.name, count(e2.employee_id) as reports_count, round(convert(float,sum(e2.age))/count(e2.employee_id),0) as average_age from Employees e1 inner join Employees e2 on e1.employee_id = e2.reports_to group by e1.employee_id, e1.name order by e1.employee_id;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

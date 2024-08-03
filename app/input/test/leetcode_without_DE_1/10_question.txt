@@ -1,0 +1,23 @@
+CREATE TABLE Employee (
+    id INT,
+    name VARCHAR(255),
+    salary INT,
+    departmentId INT
+)
+
+
+A company's executives are interested in seeing who earns the most money in each of the company's departments. A high earner in a department is an employee who has a salary in the top three unique salaries for that department.
+
+Write a solution to find the employees who are high earners in each of the departments.
+
+Return the result table in any order.
+
+
+---
+
+Please reply in json format according to the above structure, without redundant output and escape characters, so that I can get the MS SQL syntax for testing:
+example(No escape characters):
+
+{
+  "sql": " "
+}

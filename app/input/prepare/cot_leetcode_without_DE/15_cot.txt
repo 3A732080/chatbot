@@ -1,0 +1,27 @@
+---
+Example of question fifteen
+---
+
+CREATE TABLE MyNumbers (
+    num INT
+)
+
+
+A single number is a number that appeared only once in the MyNumbers table.
+
+Find the largest single number. If there is no single number, report null.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "You need to first find out which numbers appear only once and then choose the largest one from those numbers. Therefore, use a subquery to select numbers that appear only once in the MyNumbers table by filtering them through the GROUP BY and HAVING clauses. Then use the MAX() function in the outermost SELECT clause to select the maximum value among these numbers. If there is no number that meets the conditions, the result is null.",
+  "sql": "select max(num) as num  From (select num from mynumbers group by num having count(num) =1) as tmp;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

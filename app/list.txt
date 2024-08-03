@@ -1,0 +1,74 @@
+CoT
+Leetcode：
+------------------------------------------- easy -------------------------------------------
+1.	[ok][1757] Recyclable and Low Fat Products
+2.	[ok][1251] Average Selling Price
+3.	[ok][595] Big Countries
+4.	[ok][1148] Article Views I
+5.	[ok][1683] Invalid Tweets
+6.	[ok][1378] Replace Employee ID With The Unique Identifier
+7.	[ok][1667] Fix Names in a Table
+8.	[ok][1581] Customer Who Visited but Did Not Make Any Transactions
+9.	[ok][197] Rising Temperature
+10.	[ok][1661] Average Time of Process per Machine
+11.	[ok][1280] Students and Examinations
+12. [ok][1729] Find Followers Count
+13.	[ok][1075] Project Employees I
+14. [ok][2356] Number of Unique Subjects Taught by Each Teacher
+15.	[ok][619] Biggest Single Number
+16.	[ok][610] Triangle Judgement
+17.	[ok][1789] Primary Department for Each Employee
+18. [ok][1731] The Number of Employees Which Report to Each Employee
+19. [ok][1527] Patients With a Condition
+20. [ok][1484] Group Sold Products By The Date
+21. [ok][1327] List the Products Ordered in a Period
+22. [ok][1141] User Activity for the Past 30 Days I
+23. [ok][1068] Product Sales Analysis I
+24. [ok][1069] Product Sales Analysis II
+------------------------------------------- medium -------------------------------------------
+25. [ok][1070] Product Sales Analysis III
+26. [ok][1204] Last Person to Fit in the Bus
+27. [ok][1321] Restaurant Growth
+28. [ok][1934] Confirmation Rate
+29. [ok][1193] Monthly Transactions I
+30. [ok][1174] Immediate Food Delivery II
+31. [ok][180] Consecutive Numbers
+32. [1907] Count Salary Categories
+33. [585] Investments in 2016
+34. [602] Friend Requests II: Who Has the Most Friends
+35. [1164] Product Price at a Given Date
+------------------------------------------- hard -------------------------------------------
+36. [ok][571] Find Median Given Frequency of Numbers
+37. [ok][615] Average Salary: Departments VS Company
+38. [ok][1384] Total Sales Amount by Year
+39. [1336] Number of Transactions per Visit
+40. [1225] Report Contiguous Dates
+
+
+目前共 21 題，
+    easy：12
+    medium：6
+    hard：3
+
+
+test
+------------------------------------------- easy -------------------------------------------
+1. [ok][596] Classes More Than 5 Students
+2. [ok][620] Not Boring Movies
+3. [ok][584] Find Customer Referee
+4. [ok][1978] Employees Whose Manager Left the Company
+5. [ok][181] Employees Earning More Than Their Managers
+------------------------------------------- medium -------------------------------------------
+6. [ok][570] Managers with at Least 5 Direct Reports
+7. [ok][626] Exchange Seats
+8. [ok][1341] Movie Rating
+------------------------------------------- hard -------------------------------------------
+9. [ok][1369] Get the Second Most Recent Activity
+10. [ok][185] Department Top Three Salaries
+
+
+目前共 9 題，
+    easy：5
+    medium：3
+    hard：1
+

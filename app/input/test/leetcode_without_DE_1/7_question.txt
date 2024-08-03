@@ -1,0 +1,18 @@
+CREATE TABLE Seat (
+    id INT,
+    student VARCHAR(255)
+)
+
+Write a solution to swap the seat id of every two consecutive students. If the number of students is odd, the id of the last student is not swapped.
+
+Return the result table ordered by id in ascending order.
+
+
+---
+
+Please reply in json format according to the above structure, without redundant output and escape characters, so that I can get the MS SQL syntax for testing:
+example(No escape characters):
+
+{
+  "sql": " "
+}

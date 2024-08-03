@@ -1,0 +1,28 @@
+---
+Example of question thirty-six
+---
+
+CREATE TABLE Numbers (
+    num INT PRIMARY KEY,
+    frequency INT
+)
+
+
+The median is the value separating the higher half from the lower half of a data sample.
+
+Write a solution to report the median of all the numbers in the database after decompressing the Numbers table. Round the median to one decimal point.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Use CTE (Common Table Expression) to create a temporary table containing Number, Frequency, CumulativeSum, and TotalFrequency. The cumulative frequency refers to the total frequency so far, and the total frequency (TotalFrequency) is the total frequency of occurrence of all numbers. Use two subqueries to find the median. The first subquery finds the first number that is greater than or equal to half the total frequency; the second subquery finds the last number that is less than or equal to half the total frequency. The average of these two numbers is the median. Finally use the AVG function to calculate the average of the two numbers and use the ROUND function to round the result to one decimal place.",
+  "sql": "WITH CTE_Numbers AS ( SELECT Number, Frequency, SUM(Frequency) OVER (ORDER BY Number) AS CumulativeSum, SUM(Frequency) OVER () AS TotalFrequency FROM Numbers ) SELECT ROUND(AVG(CAST(Number AS FLOAT)), 1) AS Median FROM CTE_Numbers WHERE Number = ( SELECT TOP 1 Number FROM CTE_Numbers WHERE CumulativeSum >= (TotalFrequency / 2.0) ORDER BY Number ASC ) OR Number = ( SELECT TOP 1 Number FROM CTE_Numbers WHERE CumulativeSum - Frequency < (TotalFrequency / 2.0) ORDER BY Number DESC );"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

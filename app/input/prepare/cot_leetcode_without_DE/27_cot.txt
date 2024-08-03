@@ -1,0 +1,32 @@
+---
+Example of question twenty-seven
+---
+
+CREATE TABLE Customer (
+    customer_id INT,
+    name VARCHAR(20),
+    visited_on DATE,
+    amount INT
+)
+
+
+You are the restaurant owner and you want to analyze a possible expansion (there will be at least one customer every day).
+
+Compute the moving average of how much the customer paid in a seven days window (i.e., current day + 6 days before). average_amount should be rounded to two decimal places.
+
+Return the result table ordered by visited_on in ascending order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Calculate the daily sum of consumption in the subquery, and then use the ROWS BETWEEN 6 PRECEDING AND 0 FOLLOWING clause in the outer query to specify a seven-day window to calculate the sum and average of the consumption of each date and its previous six days. value. Finally, since the question requires at least one customer to visit every day, the DATEADD function is used in the WHERE clause to ensure that the earliest visit date is taken into account, and the results are returned in ascending order of visited_on.",
+  "sql": "SELECT visited_on , amount , average_amount FROM ( SELECT visited_on , SUM(amount) OVER (ORDER BY visited_on ROWS BETWEEN 6 PRECEDING AND 0 FOLLOWING) [amount] , ROUND(AVG(CONVERT(DECIMAL, amount)) OVER (ORDER BY visited_on ROWS BETWEEN 6 PRECEDING AND 0 FOLLOWING), 2) [average_amount] FROM ( SELECT visited_on , SUM(amount) [amount] FROM Customer GROUP BY visited_on ) blah ) bleh WHERE DATEADD(DAY, -6, visited_on) >= (SELECT MIN(visited_on) FROM Customer);"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

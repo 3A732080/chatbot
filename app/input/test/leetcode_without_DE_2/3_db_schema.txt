@@ -1,0 +1,20 @@
+-- 檢查Customer表是否存在，若不存在則創建
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Customer]') AND type in (N'U'))
+BEGIN
+    CREATE TABLE Customer (
+        id INT,
+        name VARCHAR(25),
+        referee_id INT NULL -- 允許NULL值
+    )
+END
+
+-- 清空Customer表中的數據
+TRUNCATE TABLE Customer
+
+-- 插入數據，對於referee_id為'None'的情況，使用NULL來替代
+INSERT INTO Customer (id, name, referee_id) VALUES (1, 'Will', NULL)
+INSERT INTO Customer (id, name, referee_id) VALUES (2, 'Jane', NULL)
+INSERT INTO Customer (id, name, referee_id) VALUES (3, 'Alex', 2)
+INSERT INTO Customer (id, name, referee_id) VALUES (4, 'Bill', NULL)
+INSERT INTO Customer (id, name, referee_id) VALUES (5, 'Zack', 1)
+INSERT INTO Customer (id, name, referee_id) VALUES (6, 'Mark', 2)

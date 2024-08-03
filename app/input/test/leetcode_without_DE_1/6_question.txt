@@ -1,0 +1,20 @@
+CREATE TABLE Employee (
+    id INT,
+    name VARCHAR(255),
+    department VARCHAR(255),
+    managerId INT NULL
+)
+
+Write a solution to find managers with at least five direct reports.
+
+Return the result table in any order.
+
+
+---
+
+Please reply in json format according to the above structure, without redundant output and escape characters, so that I can get the MS SQL syntax for testing:
+example(No escape characters):
+
+{
+  "sql": " "
+}

@@ -1,0 +1,18 @@
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Employee')
+BEGIN
+    CREATE TABLE Employee (
+        id int,
+        name varchar(255),
+        salary int,
+        managerId int NULL -- 允許 managerId 為 NULL
+    );
+END;
+
+-- 清空 Employee 表内容
+TRUNCATE TABLE Employee;
+
+-- 插入数据
+INSERT INTO Employee (id, name, salary, managerId) VALUES (1, 'Joe', 70000, 3);
+INSERT INTO Employee (id, name, salary, managerId) VALUES (2, 'Henry', 80000, 4);
+INSERT INTO Employee (id, name, salary, managerId) VALUES (3, 'Sam', 60000, NULL); -- 使用NULL代替None
+INSERT INTO Employee (id, name, salary, managerId) VALUES (4, 'Max', 90000, NULL); -- 使用NULL代替None

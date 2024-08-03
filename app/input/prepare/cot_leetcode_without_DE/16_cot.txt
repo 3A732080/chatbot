@@ -1,0 +1,29 @@
+---
+Example of second sixteen
+---
+
+CREATE TABLE Triangle (
+    x INT,
+    y INT,
+    z INT
+)
+
+
+Report for every three line segments whether they can form a triangle.
+
+Return the result table in any order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Use the CASE WHEN conditional expression to determine whether each set of three line segments can form a triangle. That is, when x+y>z, x+z>y and y+z>x are satisfied at the same time, it means that a triangle can be formed. In this case, 'Yes' is returned; otherwise, 'No' is returned. Finally, select all the fields and the triangle you just calculated to form the result, and name it triangle.",
+  "sql": "select * , (case when x+y>z and x+z>y and y+z>x then 'Yes' else 'No' end) as triangle from triangle;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

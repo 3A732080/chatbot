@@ -1,0 +1,28 @@
+---
+Example of question thirty-one
+---
+
+CREATE TABLE Logs (
+  id INT,
+  num INT
+)
+
+
+Find all numbers that appear at least three times consecutively.
+
+Return the result table in any order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Use CTE (Common Table Expression) to create a temporary table containing num, the previous number (PrevNum), and the next number (NextNum). Then select from this temporary table the numbers that appear three consecutive times, that is, the numbers where num is equal to the previous number (PrevNum) and equal to the next number (NextNum). Finally use DISTINCT to ensure unique consecutive numbers are returned.",
+  "sql": "WITH CTE AS (SELECT num, LEAD(num)over(order by id) as NextNum, LAG(num)over(order by id) as PrevNum FROM Logs ) SELECT distinct num as ConsecutiveNums FROM CTE WHERE num = NextNum and NextNum = PrevNum;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

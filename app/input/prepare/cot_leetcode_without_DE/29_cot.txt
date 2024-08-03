@@ -1,0 +1,31 @@
+---
+Example of question twenty-nine
+---
+
+CREATE TABLE Transactions (
+    id INT,
+    country VARCHAR(4),
+    state VARCHAR(10) CHECK (state IN ('approved', 'declined')),
+    amount INT,
+    trans_date DATE
+)
+
+
+Write an SQL query to find for each month and country, the number of transactions and their total amount, the number of approved transactions and their total amount.
+
+Return the result table in any order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "Use the CAST function to convert trans_date to month format (YYYY-MM), and then use the COUNT function to calculate the number of transactions for each month and country. At the same time, use the SUM and IIF functions to mark transactions with state 'approved' as 1 to calculate the total amount for each month and country, as well as the number and total amount of approved transactions. Finally, group each month and country according to the GROUP BY clause to ensure that each combination has corresponding statistical information.",
+  "sql": "SELECT cast(trans_date as varchar(7)) as month, country, count(1) as trans_count, sum(iif(state = 'approved', 1, 0))as  approved_count, sum(amount) as trans_total_amount, sum(iif(state = 'approved', amount, 0)) as approved_total_amount FROM transactions GROUP BY cast(trans_date as varchar(7)), country;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

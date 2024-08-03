@@ -1,0 +1,56 @@
+---
+Example of question nineteen
+---
+Table: Patients
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+| patient_id   | int     |
+| patient_name | varchar |
+| conditions   | varchar |
++--------------+---------+
+patient_id is the primary key (column with unique values) for this table.
+'conditions' contains 0 or more code separated by spaces.
+This table contains information of the patients in the hospital.
+
+Write a solution to find the patient_id, patient_name, and conditions of the patients who have Type I Diabetes. Type I Diabetes always starts with DIAB1 prefix.
+
+Return the result table in any order.
+
+The result format is in the following example.
+
+Example 1:
+
+Input:
+Patients table:
++------------+--------------+--------------+
+| patient_id | patient_name | conditions   |
++------------+--------------+--------------+
+| 1          | Daniel       | YFEV COUGH   |
+| 2          | Alice        |              |
+| 3          | Bob          | DIAB100 MYOP |
+| 4          | George       | ACNE DIAB100 |
+| 5          | Alain        | DIAB201      |
++------------+--------------+--------------+
+Output:
++------------+--------------+--------------+
+| patient_id | patient_name | conditions   |
++------------+--------------+--------------+
+| 3          | Bob          | DIAB100 MYOP |
+| 4          | George       | ACNE DIAB100 |
++------------+--------------+--------------+
+Explanation: Bob and George both have a condition that starts with DIAB1.
+
+---
+output
+---
+{
+  "reasoning_process" : "Finds all patients diagnosed with type 1 diabetes whose condition is prefixed with "DIAB1". Use the LIKE operator and the wildcard character ('%') to filter out records whose conditions field value contains a condition that begins with "DIAB1". To ensure that "DIAB1" is the beginning of the condition code, you can add a space before conditions to ensure that the LIKE pattern matches a complete condition code.",
+  "sql": "SELECT * FROM Patients WHERE CONCAT(' ',conditions) LIKE '% DIAB1%';"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---

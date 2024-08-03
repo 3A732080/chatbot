@@ -1,0 +1,29 @@
+---
+Example of question fourteen
+---
+
+CREATE TABLE Teacher (
+    teacher_id INT,
+    subject_id INT,
+    dept_id INT
+)
+
+
+Write a solution to calculate the number of unique subjects each teacher teaches in the university.
+
+Return the result table in any order.
+
+
+---
+output
+---
+{
+  "reasoning_process" : "To count the number of unique subjects taught by each teacher, use COUNT(DISTINCT subject_id) to count the number of unique subjects taught by each teacher and select teacher_id and COUNT(DISTINCT subject_id) as the result and name it cnt. Next, use the GROUP BY clause to group the Teacher table by teacher_id.",
+  "sql": "SELECT teacher_id, COUNT(DISTINCT subject_id) as cnt FROM Teacher GROUP BY teacher_id;"
+}
+
+---
+
+Please keep in mind the reasoning process for solving the problem, I will provide the next sample question later...
+
+---
