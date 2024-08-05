@@ -16,7 +16,7 @@ COPY init-db.sh /var/opt/mssql/scripts/init-db.sh
 
 
 
-ENTRYPOINT [ "/var/opt/mssql/scripts/init-db.sh" ]
+ENTRYPOINT [ "sh /var/opt/mssql/scripts/init-db.sh" ]
 
 # CMD 指令啟動 SQL Server
 CMD [ "/opt/mssql/bin/sqlservr" ]

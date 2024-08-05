@@ -78,7 +78,7 @@ def analyze_and_compare(lists):
 
             error = False
             compare_res = -1
-            analyzer.main(i, None, temperature, top_p)
+            # analyzer.main(i, None, temperature, top_p)
             dump(f"---------------------------------------------")
             answer_sql = analyzer.get_answer_sql(f"./output/{name}/{i}_{temperature}_{top_p}_question.json", 0)
             dump(f"{name} 預測的 SQL:")
@@ -98,7 +98,7 @@ def analyze_and_compare(lists):
 
                 # time.sleep(5)
 
-                analyzer.main(i, error_format_text(result), temperature, top_p)
+                # analyzer.main(i, error_format_text(result), temperature, top_p)
                 answer_sql = analyzer.get_answer_sql(f"./output/{name}/{i}_{temperature}_{top_p}_question.json", 1)
                 dump(f"錯誤後學習的 SQL:")
                 dump(f"{answer_sql}")
