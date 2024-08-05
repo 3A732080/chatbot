@@ -8,4 +8,4 @@ WORKDIR /app
 COPY . /app
 
 # 安裝必要的Python包
-RUN ./install.sh
+RUN sh install.sh

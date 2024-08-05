@@ -12,10 +12,12 @@ services:
 
   chatbot-mssql:
     image: mcr.microsoft.com/azure-sql-edge
+    build:
+      context: ./
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=YourStrong!Passw0rd
     ports:
       - "1430:1433"
-    volumes:
-      - ./sql_data:/var/opt/mssql
+    # volumes:
+      # - ./sql_data:/var/opt/mssql
