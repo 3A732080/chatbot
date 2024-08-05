@@ -30,6 +30,7 @@ class GoogleGemini:
 
         while (status != 200):
             response = session.post(url, headers=headers, json=data)
+            # dd(response.json())
             status = response.status_code
 
             time.sleep(1)
@@ -74,16 +75,16 @@ class GoogleGemini:
         session = requests.Session()
 
         single_question = False
-        url = f'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key={api_key}'
-        headers = {'Content-Type': 'application/json'}
+        # url = f'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key={api_key}'
+        # headers = {'Content-Type': 'application/json'}
 
         # fine-tuning
         single_question = True
-        # url = f'https://generativelanguage.googleapis.com/v1beta/tunedModels/:generateContent'
-        # headers = {
-        #     'Content-Type': 'application/json',
-        #     'Authorization': f'Bearer {api_key_bear}'
-        # }
+        url = f'https://generativelanguage.googleapis.com/v1beta/tunedModels/cjdateoursv2-g14rsbkiexnd:generateContent'
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {api_key_bear}'
+        }
 
         data = {
             "contents": [],
@@ -141,10 +142,10 @@ class GoogleGemini:
             if index != 1:
                 data['contents'] = json.loads(load_file_content(f"./input/prepare/google_gemini/prepare_{temperature}_{top_p}_result.json"))
 
-            # self.add_question_to_data(data, f"./input/prepare/cot_leetcode/{index}_cot.txt")
-            # self.add_question_to_data(data, f"./input/prepare/cot_leetcode_Compared_Ours/{index}_cot.txt")
-            # self.add_question_to_data(data, f"./input/prepare/cot_CJDate_Compared_Ours/{index}_cot.txt")
-            self.add_question_to_data(data, f"./input/prepare/cot_CJDate_Ours/{index}_cot.txt")
+            # self.add_question_to_data(data, f"./input/prepare/cot_leetcode_with_DE/{index}_cot.txt")
+            # self.add_question_to_data(data, f"./input/prepare/cot_leetcode_without_DE/{index}_cot.txt")
+            # self.add_question_to_data(data, f"./input/prepare/cot_CJDate_without_DE/{index}_cot.txt")
+            self.add_question_to_data(data, f"./input/prepare/cot_CJDate_with_DE/{index}_cot.txt")
 
             self.send_request_and_process_response(session, url, headers, data)
 

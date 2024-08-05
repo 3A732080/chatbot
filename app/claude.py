@@ -81,10 +81,10 @@ class Claude:
             if index != 1:
                 messages = json.loads(load_file_content(f"./input/prepare/claude/prepare_{temperature}_{top_p}_result.json"))
 
-            # cot_text = load_file_content(f"./input/prepare/cot_leetcode/{index}_cot.txt")
-            # cot_text = load_file_content(f"./input/prepare/cot_leetcode_Compared_Ours/{index}_cot.txt")
-            cot_text = load_file_content(f"./input/prepare/cot_CJDate_Compared_Ours/{index}_cot.txt")
-            # cot_text = load_file_content(f"./input/prepare/cot_CJDate_Ours/{index}_cot.txt")
+            # cot_text = load_file_content(f"./input/prepare/cot_leetcode_with_DE/{index}_cot.txt")
+            # cot_text = load_file_content(f"./input/prepare/cot_leetcode_without_DE/{index}_cot.txt")
+            # cot_text = load_file_content(f"./input/prepare/cot_CJDate_without_DE/{index}_cot.txt")
+            cot_text = load_file_content(f"./input/prepare/cot_CJDate_with_DE/{index}_cot.txt")
             self.add_message(messages, "user", cot_text)
 
             message = client.messages.create(

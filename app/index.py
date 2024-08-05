@@ -66,7 +66,7 @@ def analyze_and_compare(lists):
         dump(f"---------------------------------------------")
         dump(f"{i}_answer:")
         dump(f"---------------------------------------------")
-        standard_answer = load_file_content(f"./input/test/CJDate_with_DE_1/{i}_answer.txt")
+        standard_answer = load_file_content(f"./input/test/{i}_answer.txt")
         dump(f"參考答案的 SQL:")
         dump(f"{standard_answer}")
         standard_results = db.query(standard_answer)
@@ -78,9 +78,9 @@ def analyze_and_compare(lists):
 
             error = False
             compare_res = -1
-            # analyzer.main(i, None, temperature, top_p)
+            analyzer.main(i, None, temperature, top_p)
             dump(f"---------------------------------------------")
-            answer_sql = analyzer.get_answer_sql(f"./output/{name}/CJDate_without_DE/1/{i}_{temperature}_{top_p}_question.json", 0)
+            answer_sql = analyzer.get_answer_sql(f"./output/{name}/{i}_{temperature}_{top_p}_question.json", 0)
             dump(f"{name} 預測的 SQL:")
             dump(f"{answer_sql}")
 
@@ -98,8 +98,8 @@ def analyze_and_compare(lists):
 
                 # time.sleep(5)
 
-                # analyzer.main(i, error_format_text(result), temperature, top_p)
-                answer_sql = analyzer.get_answer_sql(f"./output/{name}/CJDate_without_DE/1/{i}_{temperature}_{top_p}_question.json", 1)
+                analyzer.main(i, error_format_text(result), temperature, top_p)
+                answer_sql = analyzer.get_answer_sql(f"./output/{name}/{i}_{temperature}_{top_p}_question.json", 1)
                 dump(f"錯誤後學習的 SQL:")
                 dump(f"{answer_sql}")
 
@@ -122,7 +122,7 @@ def analyze_and_compare(lists):
 
             error2 = False
             if name == 'google_gemini':
-                error2 = 'There was an error in the sql just now' in analyzer.check_error_answer(f"./output/{name}/CJDate_without_DE/1/{i}_{temperature}_{top_p}_question.json")
+                error2 = 'There was an error in the sql just now' in analyzer.check_error_answer(f"./output/{name}/{i}_{temperature}_{top_p}_question.json")
                 if error == False and error2 == True:
                     res[name]['error_count'] += 1
 

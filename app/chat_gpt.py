@@ -16,7 +16,7 @@ class ChatGpt:
                 },
                 json={
                     # 'model': 'gpt-3.5-turbo',
-                    'model': 'ft:gpt-3.5-turbo-1106:personal:',
+                    'model': 'ft:gpt-3.5-turbo-1106:personal:cjdate-ours-v2:9RgJqpiw',
                     'messages': message,
                     'temperature': float(temperature),
                     'top_p': float(top_p),
@@ -95,10 +95,10 @@ class ChatGpt:
             if index != 1:
                 messages = json.loads(load_file_content(f"./input/prepare/chat_gpt/prepare_{temperature}_{top_p}_result.json"))
 
-            # cot_text = load_file_content(f"./input/prepare/cot_leetcode/{index}_cot.txt")
-            # cot_text = load_file_content(f"./input/prepare/cot_leetcode_Compared_Ours/{index}_cot.txt")
-            cot_text = load_file_content(f"./input/prepare/cot_CJDate_Compared_Ours/{index}_cot.txt")
-            # cot_text = load_file_content(f"./input/prepare/cot_CJDate_Ours/{index}_cot.txt")
+            # cot_text = load_file_content(f"./input/prepare/cot_leetcode_with_DE/{index}_cot.txt")
+            # cot_text = load_file_content(f"./input/prepare/cot_leetcode_without_DE/{index}_cot.txt")
+            # cot_text = load_file_content(f"./input/prepare/cot_CJDate_without_DE/{index}_cot.txt")
+            cot_text = load_file_content(f"./input/prepare/cot_CJDate_with_DE/{index}_cot.txt")
 
             messages.append({
                 "role": "user",
